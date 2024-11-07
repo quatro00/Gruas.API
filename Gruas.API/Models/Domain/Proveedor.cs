@@ -40,4 +40,6 @@ public partial class Proveedor
     public virtual Estado Estado { get; set; } = null!;
 
     public virtual ICollection<Grua> Gruas { get; set; } = new List<Grua>();
+
+    public virtual ICollection<Servicio> Servicios { get; set; } = new List<Servicio>();
 }

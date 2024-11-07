@@ -392,6 +392,10 @@ public partial class GruasContext : DbContext
                 .HasForeignKey(d => d.MunicipioId)
                 .HasConstraintName("FK_Servicio_Municipio");
 
+            entity.HasOne(d => d.Proveedor).WithMany(p => p.Servicios)
+                .HasForeignKey(d => d.ProveedorId)
+                .HasConstraintName("FK_Servicio_Proveedor");
+
             entity.HasOne(d => d.TipoServicio).WithMany(p => p.Servicios)
                 .HasForeignKey(d => d.TipoServicioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)

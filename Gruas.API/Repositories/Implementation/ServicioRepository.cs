@@ -13,6 +13,93 @@ namespace Gruas.API.Repositories.Implementation
     {
         private readonly GruasContext context;
         public ServicioRepository(GruasContext context) => this.context = context;
+
+        public async Task<ResponseModel> GetServicio(Guid id)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var result = await context.Servicios.Include(x=>x.EstatusServicio).Include(x => x.Municipio).ThenInclude(m => m.Estado).Select(s => new GetServicio_Response()
+                {
+                    id = s.Id,
+                    tipo = s.TipoVehiculo,
+                    placas = s.VehiculoCuentaPlacas,
+                    marca = s.VehiculoMarca,
+                    modelo = s.VehiculoModelo,
+                    anio = s.VehiculoAnio,
+                    numPersonas = s.PersonasEnVehiculo,
+                    origen = s.OrigenDireccion,
+                    destino = s.DestinoDireccion,
+                    estado = s.Municipio != null ? s.Municipio.Estado.Nombre : string.Empty,
+                    municipio = s.Municipio != null ? s.Municipio.Nombre : string.Empty,
+                    kilometros = s.DireccionKmTotales ?? 0,
+                    tiempoEstimado = s.DireccionMinsTrafico ?? 0,
+                    fugaCombustible = s.FugaCombustible ? "Si" : "No",
+                    llantasGiran = s.LlantasGiran ? "Si" : "No",
+                    esPosibleNeutral = s.PuedeNeutral ? "Si" : "No",
+                    personasEnVehiculo = s.PersonasEnVehiculo,
+                    lugar = s.LugarUbicuidad,
+                    carril = s.CarreteraCarril ?? 0,
+                    kilometro = s.CarreteraKm ?? 0,
+                    tipoDeEstacionamiento = s.EstacionamientoTipo ?? string.Empty,
+                    pisoEstacionamiento = s.EstacionamientoPiso ?? string.Empty,
+                    vehiculoAccidentado = s.VehiculoAccidentado ? "Si" : "No",
+                    tarifaInicial = s.Banderazo,
+                    costoPorKm = s.CuotaKm,
+                    tarifaDinamica = 0,
+                    maniobras = s.ManiobrasCosto,
+                    totalSugerido = s.TotalSugerido,
+                    estatus = s.EstatusServicio.Descripcion,
+                    razonSocial = s.Proveedor != null ? s.Proveedor.RazonSocial : string.Empty,
+                    telefono_1 = s.Proveedor != null ? s.Proveedor.Telefono1 : string.Empty,
+                    telefono_2 = s.Proveedor != null ? s.Proveedor.Telefono2 : string.Empty,
+                }).Where(x=>x.id == id).FirstOrDefaultAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
+        public async Task<ResponseModel> GetServicios(int? estatusServicioId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var result = await context.Servicios.Include(x=>x.Municipio).ThenInclude(m => m.Estado).Select(s => new GetServicios_Response()
+                {
+                    id = s.Id,
+                    folio = s.Folio.ToString(),
+                    cliente = s.Cliente.Nombre + " " + s.Cliente.Apellidos,
+                    telefono = s.Cliente.Telefono,
+                    estado = s.Municipio != null ? s.Municipio.Estado.Nombre : string.Empty,
+                    origen = s.OrigenDireccion,
+                    destino = s.DestinoDireccion,
+                    costo = s.TotalSugerido.ToString("C"),
+                    estatus = s.EstatusServicio.Descripcion,
+                    fechaCreacion = s.FechaCreacion,
+                    fecha = s.Fecha,
+                    proveedor = ""
+                }).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
         public async Task<ResponseModel> InsServicio(RegistraServicio_Request model, Guid usuarioId)
         {
             ResponseModel rm = new ResponseModel();

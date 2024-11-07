@@ -101,6 +101,7 @@ namespace Gruas.API.Repositories.Implementation
             ResponseModel rm = new ResponseModel();
             try
             {
+                int noProveedor = await this.context.Proveedors.CountAsync() + 1;
                 Proveedor item = new Proveedor()
                 {
                     Id = Guid.NewGuid(),
@@ -108,6 +109,7 @@ namespace Gruas.API.Repositories.Implementation
                     Direccion = model.direccion,
                     Telefono1 = model.telefono_1,
                     Telefono2 = model.telefono_2,
+                    NoProveedor = noProveedor,
                     Banco = model.banco,
                     Cuenta = model.cuenta,
                     Rfc = model.rfc,

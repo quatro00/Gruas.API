@@ -20,6 +20,22 @@ namespace Gruas.API.Controllers
             this.servicioRepository = servicioRepository;
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("GetSerrvicios")]
+        public async Task<IActionResult> GetSerrvicios(int? estatusServicioId)
+        {
+            var response = await servicioRepository.GetServicios(estatusServicioId);
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
+
         [HttpPost]
         [Authorize]
         [Route("RegistraServicio")]
@@ -32,6 +48,22 @@ namespace Gruas.API.Controllers
                 ModelState.AddModelError("error", response.message);
                 return ValidationProblem(ModelState);
             }
+            return Ok(response.result);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("GetServicio")]
+        public async Task<IActionResult> GetServicio(Guid servicioId)
+        {
+            var response = await servicioRepository.GetServicio(servicioId);
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
             return Ok(response.result);
         }
     }

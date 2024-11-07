@@ -127,5 +127,7 @@ public partial class Servicio
 
     public virtual ICollection<Propuestum> Propuesta { get; set; } = new List<Propuestum>();
 
+    public virtual Proveedor? Proveedor { get; set; }
+
     public virtual TipoServicio TipoServicio { get; set; } = null!;
 }
