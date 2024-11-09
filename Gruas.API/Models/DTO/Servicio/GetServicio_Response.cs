@@ -47,5 +47,7 @@
         public string telefono_1 { get; set; }
         public string telefono_2 { get; set; }
 
+        public int estatusServicio { get; set; }
+
     }
 }

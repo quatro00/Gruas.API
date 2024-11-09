@@ -4,6 +4,7 @@ using Gruas.API.Data;
 using Gruas.API.Models;
 using Gruas.API.Models.Domain;
 using Gruas.API.Models.DTO.Servicio;
+using Gruas.API.Models.Enums;
 using Gruas.API.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,96 @@ namespace Gruas.API.Repositories.Implementation
     {
         private readonly GruasContext context;
         public ServicioRepository(GruasContext context) => this.context = context;
+
+        public async Task<ResponseModel> AsignarGrua(AsignarGrua_Request request, Guid usuarioId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+
+                var grua = await this.context.Gruas.FindAsync(request.gruaId);
+                var servicio = await this.context.Servicios.FindAsync(request.servicioId);
+
+                if (servicio != null)
+                {
+                    servicio.ProveedorId = grua.ProveedorId;
+                    servicio.GruaId = grua.Id;
+                    servicio.Total = request.costo;
+                    servicio.TiempoLlegada = request.tiempo;
+                    servicio.EstatusServicioId = (int)EstatusServicio_Enum.Aceptado;
+                    servicio.FechaModificacion = DateTime.Now;
+                    servicio.UsuarioModificacionId = usuarioId;
+                }
+
+                await this.context.SaveChangesAsync();
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
+        public async Task<ResponseModel> CancelarServicio(CancelarServicio_Request request, Guid usuarioId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var servicio = await this.context.Servicios.FindAsync(request.servicioId);
+
+                if (servicio != null)
+                {
+                    servicio.EstatusServicioId = (int)EstatusServicio_Enum.Cancelado;
+                    
+                    servicio.FechaCancelacion = DateTime.Now;
+                    servicio.UsuarioCancelacion = usuarioId;
+                    servicio.MotivoCancelacion = request.motivo;
+
+                    servicio.FechaModificacion = DateTime.Now;
+                    servicio.UsuarioModificacionId = usuarioId;
+                }
+
+                await this.context.SaveChangesAsync();
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
+        public async Task<ResponseModel> ColocarEnPropuesta(ColocarEnPropuesta_Request request, Guid usuarioId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var servicio = await this.context.Servicios.FindAsync(request.servicioId);
+
+                if (servicio != null)
+                {
+                    servicio.EstatusServicioId = (int)EstatusServicio_Enum.EnPropuesta;
+
+                    servicio.FechaModificacion = DateTime.Now;
+                    servicio.UsuarioModificacionId = usuarioId;
+                }
+
+                await this.context.SaveChangesAsync();
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
 
         public async Task<ResponseModel> GetServicio(Guid id)
         {
@@ -28,6 +119,7 @@ namespace Gruas.API.Repositories.Implementation
                     marca = s.VehiculoMarca,
                     modelo = s.VehiculoModelo,
                     anio = s.VehiculoAnio,
+                    estatusServicio = s.EstatusServicioId,
                     numPersonas = s.PersonasEnVehiculo,
                     origen = s.OrigenDireccion,
                     destino = s.DestinoDireccion,
@@ -73,10 +165,11 @@ namespace Gruas.API.Repositories.Implementation
 
             try
             {
-                var result = await context.Servicios.Include(x=>x.Municipio).ThenInclude(m => m.Estado).Select(s => new GetServicios_Response()
+                var result = await context.Servicios.Include(x=>x.Proveedor).Include(x=>x.Grua).Include(x=>x.Municipio).ThenInclude(m => m.Estado).Select(s => new GetServicios_Response()
                 {
                     id = s.Id,
                     folio = s.Folio.ToString(),
+                    estatusServicioId = s.EstatusServicioId,
                     cliente = s.Cliente.Nombre + " " + s.Cliente.Apellidos,
                     telefono = s.Cliente.Telefono,
                     estado = s.Municipio != null ? s.Municipio.Estado.Nombre : string.Empty,
@@ -86,7 +179,11 @@ namespace Gruas.API.Repositories.Implementation
                     estatus = s.EstatusServicio.Descripcion,
                     fechaCreacion = s.FechaCreacion,
                     fecha = s.Fecha,
-                    proveedor = ""
+                    proveedor = s.Proveedor != null ? s.Proveedor.RazonSocial : string.Empty,
+                    gruaPlaca = s.Grua != null ? s.Grua.Placas : string.Empty,
+                    gruaMarca = s.Grua != null ? s.Grua.Marca : string.Empty,
+                    gruaModelo = s.Grua != null ? s.Grua.Modelo : string.Empty,
+                    gruaTipo = s.Grua != null ? s.Grua.TipoGrua.Descripcion : string.Empty,
                 }).ToListAsync();
 
                 rm.result = result;
@@ -246,6 +343,60 @@ namespace Gruas.API.Repositories.Implementation
                 rm.SetResponse(true);
             }
             catch (Exception e)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
+        public async Task<ResponseModel> SolicitarCotizaciones(SolicitarCotizacion_Request request, Guid usuarioId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var servicio = await this.context.Servicios.FindAsync(request.servicioId);
+
+                if (servicio != null)
+                {
+                    servicio.EstatusServicioId = (int)EstatusServicio_Enum.EnEsperaDeCotizaciones;
+
+                    servicio.FechaModificacion = DateTime.Now;
+                    servicio.UsuarioModificacionId = usuarioId;
+                }
+
+                await this.context.SaveChangesAsync();
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
+        public async Task<ResponseModel> TerminarServicio(TerminarServicio_Request request, Guid usuarioId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var servicio = await this.context.Servicios.FindAsync(request.servicioId);
+
+                if (servicio != null)
+                {
+                    servicio.EstatusServicioId = (int)EstatusServicio_Enum.Terminado;
+
+                    servicio.FechaModificacion = DateTime.Now;
+                    servicio.UsuarioModificacionId = usuarioId;
+                }
+
+                await this.context.SaveChangesAsync();
+                rm.SetResponse(true);
+            }
+            catch (Exception)
             {
                 rm.SetResponse(false);
             }

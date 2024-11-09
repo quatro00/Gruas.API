@@ -14,5 +14,11 @@
         public string proveedor { get; set; }
         public DateTime fechaCreacion { get; set; }
         public DateTime fecha { get; set; }
+        public int estatusServicioId { get; set; }
+        public string gruaPlaca { get; set; }
+        public string gruaMarca { get; set; }
+        public string gruaTipo { get; set; }
+        public string gruaModelo { get; set; }
+
     }
 }

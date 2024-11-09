@@ -29,6 +29,8 @@ public partial class Grua
 
     public Guid? UsuarioModificacionId { get; set; }
 
+    public virtual ICollection<Cotizacion> Cotizacions { get; set; } = new List<Cotizacion>();
+
     public virtual ICollection<GruaImagen> GruaImagens { get; set; } = new List<GruaImagen>();
 
     public virtual ICollection<Propuestum> Propuesta { get; set; } = new List<Propuestum>();

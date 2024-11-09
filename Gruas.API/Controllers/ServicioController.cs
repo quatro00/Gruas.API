@@ -51,6 +51,81 @@ namespace Gruas.API.Controllers
             return Ok(response.result);
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("SolicitarCotizaciones")]
+        public async Task<IActionResult> SolicitarCotizaciones(SolicitarCotizacion_Request request)
+        {
+            var response = await servicioRepository.SolicitarCotizaciones(request, Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+            return Ok(response.result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("ColocarEnPropuesta")]
+        public async Task<IActionResult> ColocarEnPropuesta(ColocarEnPropuesta_Request request)
+        {
+            var response = await servicioRepository.ColocarEnPropuesta(request, Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+            return Ok(response.result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("TerminarServicio")]
+        public async Task<IActionResult> TerminarServicio(TerminarServicio_Request request)
+        {
+            var response = await servicioRepository.TerminarServicio(request, Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+            return Ok(response.result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("AsignarGrua")]
+        public async Task<IActionResult> AsignarGrua(AsignarGrua_Request request)
+        {
+            var response = await servicioRepository.AsignarGrua(request, Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+            return Ok(response.result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("CancelarServicio")]
+        public async Task<IActionResult> CancelarServicio(CancelarServicio_Request request)
+        {
+            var response = await servicioRepository.CancelarServicio(request, Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+            return Ok(response.result);
+        }
+
         [HttpGet]
         [Authorize]
         [Route("GetServicio")]

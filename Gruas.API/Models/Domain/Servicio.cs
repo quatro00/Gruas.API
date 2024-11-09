@@ -107,6 +107,12 @@ public partial class Servicio
 
     public decimal? DireccionMinsTrafico { get; set; }
 
+    public string? MotivoCancelacion { get; set; }
+
+    public DateTime? FechaCancelacion { get; set; }
+
+    public Guid? UsuarioCancelacion { get; set; }
+
     public bool Activo { get; set; }
 
     public DateTime FechaCreacion { get; set; }
@@ -118,6 +124,8 @@ public partial class Servicio
     public Guid? UsuarioModificacionId { get; set; }
 
     public virtual Cuentum Cliente { get; set; } = null!;
+
+    public virtual ICollection<Cotizacion> Cotizacions { get; set; } = new List<Cotizacion>();
 
     public virtual EstatusServicio EstatusServicio { get; set; } = null!;
 

@@ -32,6 +32,8 @@ public partial class GruasContext : DbContext
 
     public virtual DbSet<Configuracion> Configuracions { get; set; }
 
+    public virtual DbSet<Cotizacion> Cotizacions { get; set; }
+
     public virtual DbSet<Cuentum> Cuenta { get; set; }
 
     public virtual DbSet<Estado> Estados { get; set; }
@@ -137,6 +139,30 @@ public partial class GruasContext : DbContext
             entity.Property(e => e.ValorDate).HasColumnType("datetime");
             entity.Property(e => e.ValorDecimal).HasColumnType("numeric(18, 2)");
             entity.Property(e => e.ValorString).HasMaxLength(500);
+        });
+
+        modelBuilder.Entity<Cotizacion>(entity =>
+        {
+            entity.HasKey(e => new { e.GruaId, e.ServicioId }).HasName("PK_ServicioGrua");
+
+            entity.ToTable("Cotizacion");
+
+            entity.Property(e => e.Cotizacion1)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("Cotizacion");
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.TiempoArrivo).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.Grua).WithMany(p => p.Cotizacions)
+                .HasForeignKey(d => d.GruaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Cotizacion_Grua");
+
+            entity.HasOne(d => d.Servicio).WithMany(p => p.Cotizacions)
+                .HasForeignKey(d => d.ServicioId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Cotizacion_Servicio");
         });
 
         modelBuilder.Entity<Cuentum>(entity =>
@@ -330,10 +356,12 @@ public partial class GruasContext : DbContext
                 .HasMaxLength(500)
                 .HasColumnName("Estacionamiento_Tipo");
             entity.Property(e => e.Fecha).HasColumnType("datetime");
+            entity.Property(e => e.FechaCancelacion).HasColumnType("datetime");
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
             entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
             entity.Property(e => e.LugarUbicuidad).HasMaxLength(500);
             entity.Property(e => e.ManiobrasCosto).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.MotivoCancelacion).HasMaxLength(250);
             entity.Property(e => e.OrigenDireccion)
                 .HasMaxLength(500)
                 .HasColumnName("Origen_Direccion");
