@@ -31,5 +31,37 @@ namespace Gruas.API.Controllers
 
             return Ok(response.result);
         }
+
+        [HttpGet]
+        [Authorize]
+        [Route("GetEstatusServicio")]
+        public async Task<IActionResult> GetEstatusServicio()
+        {
+            var response = await catalogoRepository.GetEstatusServicio();
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("GetEstatusPago")]
+        public async Task<IActionResult> GetEstatusPago()
+        {
+            var response = await catalogoRepository.GetEstatusPago();
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
     }
 }

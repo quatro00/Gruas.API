@@ -38,6 +38,8 @@ public partial class GruasContext : DbContext
 
     public virtual DbSet<Estado> Estados { get; set; }
 
+    public virtual DbSet<EstatusPago> EstatusPagos { get; set; }
+
     public virtual DbSet<EstatusServicio> EstatusServicios { get; set; }
 
     public virtual DbSet<Grua> Gruas { get; set; }
@@ -47,6 +49,10 @@ public partial class GruasContext : DbContext
     public virtual DbSet<Marca> Marcas { get; set; }
 
     public virtual DbSet<Municipio> Municipios { get; set; }
+
+    public virtual DbSet<Pago> Pagos { get; set; }
+
+    public virtual DbSet<PagoDetalle> PagoDetalles { get; set; }
 
     public virtual DbSet<Propuestum> Propuesta { get; set; }
 
@@ -196,6 +202,14 @@ public partial class GruasContext : DbContext
             entity.Property(e => e.NombreCorto).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<EstatusPago>(entity =>
+        {
+            entity.ToTable("EstatusPago");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Descripcion).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<EstatusServicio>(entity =>
         {
             entity.ToTable("EstatusServicio");
@@ -265,6 +279,52 @@ public partial class GruasContext : DbContext
                 .HasConstraintName("FK_Municipio_Estado");
         });
 
+        modelBuilder.Entity<Pago>(entity =>
+        {
+            entity.ToTable("Pago");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Concepto).HasMaxLength(500);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaPago).HasColumnType("datetime");
+            entity.Property(e => e.Monto).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Referencia).HasMaxLength(250);
+
+            entity.HasOne(d => d.EstatusPago).WithMany(p => p.Pagos)
+                .HasForeignKey(d => d.EstatusPagoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Pago_EstatusPago");
+
+            entity.HasOne(d => d.Proveedor).WithMany(p => p.Pagos)
+                .HasForeignKey(d => d.ProveedorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Pago_Proveedor");
+        });
+
+        modelBuilder.Entity<PagoDetalle>(entity =>
+        {
+            entity.HasKey(e => new { e.PagoId, e.ServicioId }).HasName("PK_PagoServicio");
+
+            entity.ToTable("PagoDetalle");
+
+            entity.Property(e => e.Comision).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+            entity.Property(e => e.SubTotal).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Total).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.Pago).WithMany(p => p.PagoDetalles)
+                .HasForeignKey(d => d.PagoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PagoDetalle_Pago");
+
+            entity.HasOne(d => d.Servicio).WithMany(p => p.PagoDetalles)
+                .HasForeignKey(d => d.ServicioId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PagoDetalle_Servicio");
+        });
+
         modelBuilder.Entity<Propuestum>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
@@ -290,6 +350,7 @@ public partial class GruasContext : DbContext
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Banco).HasMaxLength(50);
+            entity.Property(e => e.Comision).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.Cuenta).HasMaxLength(50);
             entity.Property(e => e.Direccion).HasMaxLength(500);
             entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
@@ -320,6 +381,7 @@ public partial class GruasContext : DbContext
                 .HasMaxLength(500)
                 .HasColumnName("Carretera_Destino");
             entity.Property(e => e.CarreteraKm).HasColumnName("Carretera_Km");
+            entity.Property(e => e.CorreoElectronico).HasMaxLength(250);
             entity.Property(e => e.CuotaKm).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.DestinoDireccion)
                 .HasMaxLength(500)
@@ -377,6 +439,7 @@ public partial class GruasContext : DbContext
             entity.Property(e => e.OrigenReferencia)
                 .HasMaxLength(500)
                 .HasColumnName("Origen_Referencia");
+            entity.Property(e => e.Telefono).HasMaxLength(50);
             entity.Property(e => e.TiempoLlegada).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.TipoVehiculo).HasMaxLength(50);
             entity.Property(e => e.Total).HasColumnType("decimal(18, 2)");

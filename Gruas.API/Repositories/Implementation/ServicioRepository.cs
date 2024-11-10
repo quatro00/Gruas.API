@@ -165,7 +165,7 @@ namespace Gruas.API.Repositories.Implementation
 
             try
             {
-                var result = await context.Servicios.Include(x=>x.Proveedor).Include(x=>x.Grua).Include(x=>x.Municipio).ThenInclude(m => m.Estado).Select(s => new GetServicios_Response()
+                var result = await context.Servicios.Where(x=>x.EstatusServicioId == estatusServicioId || estatusServicioId == null).Include(x=>x.Proveedor).Include(x=>x.Grua).Include(x=>x.Municipio).ThenInclude(m => m.Estado).Select(s => new GetServicios_Response()
                 {
                     id = s.Id,
                     folio = s.Folio.ToString(),
@@ -230,8 +230,8 @@ namespace Gruas.API.Repositories.Implementation
                 var distancia = await Gruas.API.Utils.Helpers.GetDrivingDistance(origen, destino);
 
                 //buscamos al cliente con el telefono
-                Cuentum? cuenta = await this.context.Cuenta.Where(x => x.Telefono == model.telefono).FirstOrDefaultAsync();
-                if(cuenta == null) { cuenta = await this.context.Cuenta.Where(x => x.CorreoElectronico == model.correoElectronico).FirstOrDefaultAsync(); }
+                Cuentum? cuenta = await this.context.Cuenta.Where(x => x.CorreoElectronico == model.correoElectronico).FirstOrDefaultAsync();
+                //if(cuenta == null) { cuenta = await this.context.Cuenta.Where(x => x.CorreoElectronico == model.correoElectronico).FirstOrDefaultAsync(); }
 
                 //si no existe la cuenta la creamos
                 if(cuenta == null)
@@ -329,6 +329,9 @@ namespace Gruas.API.Repositories.Implementation
                     Fecha = model.fecha,
                     TipoServicioId = 1, //servicio de grua
                     VehiculoPlacas = model.placaPermiso ?? "",
+
+                    CorreoElectronico = model.correoElectronico,
+                    Telefono = model.telefono,
                     Activo = true,
                     FechaCreacion = DateTime.Now,
                     UsuarioCreadionId = usuarioId

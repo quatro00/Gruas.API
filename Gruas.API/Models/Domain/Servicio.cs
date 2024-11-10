@@ -113,6 +113,10 @@ public partial class Servicio
 
     public Guid? UsuarioCancelacion { get; set; }
 
+    public string? Telefono { get; set; }
+
+    public string? CorreoElectronico { get; set; }
+
     public bool Activo { get; set; }
 
     public DateTime FechaCreacion { get; set; }
@@ -132,6 +136,8 @@ public partial class Servicio
     public virtual Grua? Grua { get; set; }
 
     public virtual Municipio? Municipio { get; set; }
+
+    public virtual ICollection<PagoDetalle> PagoDetalles { get; set; } = new List<PagoDetalle>();
 
     public virtual ICollection<Propuestum> Propuesta { get; set; } = new List<Propuestum>();
 

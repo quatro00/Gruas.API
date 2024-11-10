@@ -25,6 +25,8 @@ public partial class Proveedor
 
     public Guid EstadoId { get; set; }
 
+    public decimal Comision { get; set; }
+
     public bool Activo { get; set; }
 
     public DateTime FechaCreacion { get; set; }
@@ -40,6 +42,8 @@ public partial class Proveedor
     public virtual Estado Estado { get; set; } = null!;
 
     public virtual ICollection<Grua> Gruas { get; set; } = new List<Grua>();
+
+    public virtual ICollection<Pago> Pagos { get; set; } = new List<Pago>();
 
     public virtual ICollection<Servicio> Servicios { get; set; } = new List<Servicio>();
 }

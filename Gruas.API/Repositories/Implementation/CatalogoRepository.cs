@@ -21,7 +21,53 @@ namespace Gruas.API.Repositories.Implementation
                 {
                     id = s.Id,
                     descripcion = s.Descripcion,
-                }).ToListAsync();
+                }).OrderBy(x => x.id).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
+        public async Task<ResponseModel> GetEstatusServicio()
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var result = await context.EstatusServicios.Select(s => new Catalogo_Response()
+                {
+                    id = s.Id,
+                    descripcion = s.Descripcion,
+                }).OrderBy(x=>x.id).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
+        public async Task<ResponseModel> GetEstatusPago()
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var result = await context.EstatusPagos.Select(s => new Catalogo_Response()
+                {
+                    id = s.Id,
+                    descripcion = s.Descripcion,
+                }).OrderBy(x => x.id).ToListAsync();
 
                 rm.result = result;
                 rm.SetResponse(true);

@@ -8,6 +8,8 @@
         EnPropuesta = 4,
         Aceptado = 5,
         Transito = 6,
-        Terminado = 7
+        Terminado = 7,
+        EnProcesoDePago = 8,
+        Pagado = 9
     }
 }
