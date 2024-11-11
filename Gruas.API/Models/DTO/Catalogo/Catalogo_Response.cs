@@ -2,7 +2,7 @@
 {
     public class Catalogo_Response
     {
-        public int id { get; set; }
+        public dynamic id { get; set; }
         public string descripcion { get; set; }
     }
 }

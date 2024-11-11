@@ -31,5 +31,21 @@ namespace Gruas.API.Controllers
 
             return Ok(response.result);
         }
+
+        [HttpPost]
+        [Route("GetServicios")]
+        [Authorize]
+        public async Task<IActionResult> GetServicios([FromBody] GetServicios_Request model)
+        {
+            var response = await reportesRepository.GetServicios(model);
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
     }
 }

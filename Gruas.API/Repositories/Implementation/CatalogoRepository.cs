@@ -79,5 +79,28 @@ namespace Gruas.API.Repositories.Implementation
 
             return rm;
         }
+
+        public async Task<ResponseModel> GetEstados()
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var result = await context.Estados.Select(s => new Catalogo_Response()
+                {
+                    id = s.Id,
+                    descripcion = s.Nombre,
+                }).OrderBy(x => x.id).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
     }
 }

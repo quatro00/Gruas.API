@@ -53,5 +53,54 @@ namespace Gruas.API.Repositories.Implementation
 
             return rm;
         }
+
+        public async Task<ResponseModel> GetServicios(GetServicios_Request model)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+
+                var result = await context.Servicios
+                    .Include(x => x.Proveedor)
+                    .Include(x => x.EstatusServicio)
+                    .Include(x=>x.Municipio).ThenInclude(x=>x.Estado)
+                    .Include(x=>x.Grua).ThenInclude(x=>x.TipoGrua)
+                    .Include(x=>x.Cotizacions)
+                    
+                    .Where(x =>
+                        (x.EstatusServicioId == model.estatusServicioId || model.estatusServicioId == null) &&
+                        (x.ProveedorId == model.proveedorId || model.proveedorId == null) &&
+                        (x.FechaCreacion >= model.fechaInicio || model.fechaInicio == null) &&
+                        (x.FechaCreacion <= model.fechaTermino || model.fechaTermino == null))
+                    .Select(s => new GetServicios_Response()
+                    {
+                        id = s.Id,
+                        folio = s.Folio,
+                        cliente = s.Cliente.Nombre,
+                        telefono = s.Cliente.Telefono,
+                        estado = s.Municipio != null ? s.Municipio.Estado.Nombre : string.Empty,
+                        municipio = s.Municipio != null ? s.Municipio.Nombre : string.Empty,
+                        origen = s.OrigenDireccion,
+                        destino = s.DestinoDireccion,
+                        total = s.Total ?? 0,
+                        totalSugerido = s.TotalSugerido,
+                        comision = 0,
+                        estatus = s.EstatusServicio.Descripcion,
+                        proveedor = s.Proveedor != null ? s.Proveedor.RazonSocial : string.Empty,//s.,
+                        grua = s.Grua != null ? s.Grua.Placas : string.Empty,
+                        tipo = s.Grua != null ? s.Grua.TipoGrua.Descripcion : string.Empty,
+                        numCotizaciones = s.Cotizacions.Count,
+                    }).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+            return rm;
+        }
     }
 }

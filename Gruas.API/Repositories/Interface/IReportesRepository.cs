@@ -6,5 +6,6 @@ namespace Gruas.API.Repositories.Interface
     public interface IReportesRepository
     {
         public Task<ResponseModel> GetPagos(GetPagos_Request model);
+        public Task<ResponseModel> GetServicios(GetServicios_Request model);
     }
 }

@@ -7,5 +7,6 @@ namespace Gruas.API.Repositories.Interface
         public Task<ResponseModel> GetTipoGrua();
         public Task<ResponseModel> GetEstatusServicio();
         public Task<ResponseModel> GetEstatusPago();
+        public Task<ResponseModel> GetEstados();
     }
 }

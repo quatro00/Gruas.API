@@ -63,5 +63,21 @@ namespace Gruas.API.Controllers
 
             return Ok(response.result);
         }
+
+        [HttpGet]
+        [Authorize]
+        [Route("GetEstados")]
+        public async Task<IActionResult> GetEstados()
+        {
+            var response = await catalogoRepository.GetEstados();
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
     }
 }
