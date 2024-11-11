@@ -47,5 +47,37 @@ namespace Gruas.API.Controllers
 
             return Ok(response.result);
         }
+
+        [HttpPost]
+        [Route("GetProveedores")]
+        [Authorize]
+        public async Task<IActionResult> GetProveedores([FromBody] GetProveedores_Request model)
+        {
+            var response = await reportesRepository.GetProveedores(model);
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
+
+        [HttpPost]
+        [Route("GetGruas")]
+        [Authorize]
+        public async Task<IActionResult> GetGruas([FromBody] GetGruas_Request model)
+        {
+            var response = await reportesRepository.GetGruas(model);
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
     }
 }

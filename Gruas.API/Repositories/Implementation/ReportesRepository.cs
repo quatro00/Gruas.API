@@ -13,6 +13,42 @@ namespace Gruas.API.Repositories.Implementation
     {
         private readonly GruasContext context;
         public ReportesRepository(GruasContext context) => this.context = context;
+
+        public async Task<ResponseModel> GetGruas(GetGruas_Request model)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+
+                var result = await context.Gruas.Include(x=>x.TipoGrua).Include(x => x.Proveedor)
+                    .Where(x =>
+                        (x.ProveedorId == model.proveedorId || model.proveedorId == null) &&
+                        (x.TipoGruaId == model.tipoGruaId || model.tipoGruaId == null) &&
+                        (x.Placas.ToUpper().Contains(model.placas ?? "") || model.placas == null))
+                    .Select(s => new GetGruas_Response()
+                    {
+                        id = s.Id,
+                        proveedor = $"{s.Proveedor.RazonSocial}",
+                        tipoGrua = s.TipoGrua.Descripcion,
+                        placas = s.Placas,
+                        marca = s.Marca,
+                        modelo = s.Modelo,
+                        anio = s.Anio,
+                        activo = s.Activo ? 1 : 0
+                    }).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
         public async Task<ResponseModel> GetPagos(GetPagos_Request model)
         {
             ResponseModel rm = new ResponseModel();
@@ -54,6 +90,49 @@ namespace Gruas.API.Repositories.Implementation
             return rm;
         }
 
+        public async Task<ResponseModel> GetProveedores(GetProveedores_Request model)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            if(model.descripcion == null)
+            {
+                model.descripcion = "";
+            }
+            try
+            {
+
+                var result = await context.Proveedors
+                    .Where(x =>
+                        (x.EstadoId == model.estadoId || model.estadoId == null) &&
+                        ((x.RazonSocial.ToUpper().Contains(model.descripcion.ToUpper())) || (x.NoProveedor.ToString().ToUpper().Contains(model.descripcion.ToUpper()))
+                        
+                        ))
+                    .Select(s => new GetProveedores_Response()
+                    {
+                        id = s.Id,
+                        noProveedor = s.NoProveedor,
+                        razonSocial = s.RazonSocial,
+                        direccion = s.Direccion,
+                        telefono_1 = s.Telefono1,
+                        telefono_2 = s.Telefono2,
+                        rfc = s.Rfc,
+                        banco = s.Banco,
+                        cuenta = s.Cuenta,
+                        comision = s.Comision,
+                        estado = s.Estado.Nombre,
+                        activo = s.Activo,
+                    }).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+            return rm;
+        }
+
         public async Task<ResponseModel> GetServicios(GetServicios_Request model)
         {
             ResponseModel rm = new ResponseModel();
@@ -67,7 +146,6 @@ namespace Gruas.API.Repositories.Implementation
                     .Include(x=>x.Municipio).ThenInclude(x=>x.Estado)
                     .Include(x=>x.Grua).ThenInclude(x=>x.TipoGrua)
                     .Include(x=>x.Cotizacions)
-                    
                     .Where(x =>
                         (x.EstatusServicioId == model.estatusServicioId || model.estatusServicioId == null) &&
                         (x.ProveedorId == model.proveedorId || model.proveedorId == null) &&
