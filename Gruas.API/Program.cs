@@ -34,6 +34,7 @@ builder.Services.AddScoped<ICatalogoRepository, CatalogoRepository>();
 builder.Services.AddScoped<IGruaRepository, GruaRepository>();
 builder.Services.AddScoped<IPagoRepository, PagoRepository>();
 builder.Services.AddScoped<IReportesRepository, ReportesRepository>();
+builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
 //builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 //builder.Services.AddScoped<IMensajesInstitucionalesRepository, MensajesInstitucionalesRepository>();
 //builder.Services.AddScoped<ICatTipoMensajesInstitucionalesRepository, CatTipoMensajesInstitucionalesRepository>();

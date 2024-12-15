@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "waso7FsabRRaUNLJSKXd5UQzVFKBXkj1ybQyDyjWH7Y=",
+  "Hash": "2Ykt8tTicM7INWXmvQ3wjTYc+g3h70Me0+4UoBVy96Q=",
   "Source": "Gruas.API",
   "BasePath": "_content/Gruas.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }

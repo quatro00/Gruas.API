@@ -1,0 +1,525 @@
+[
+  {
+    "ContainingType": "Gruas.API.Controllers.AuthController",
+    "Method": "ChangePassword",
+    "RelativePath": "api/Auth/change-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Auth.ChangePasswordRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.AuthController",
+    "Method": "ForgotPassword",
+    "RelativePath": "api/Auth/forgot-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Auth.ForgotPasswordRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Auth.LoginRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.AuthController",
+    "Method": "RestorePassword",
+    "RelativePath": "api/Auth/restore-password",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Auth.RestorePasswordRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.CatalogoController",
+    "Method": "GetEstados",
+    "RelativePath": "api/Catalogo/GetEstados",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.CatalogoController",
+    "Method": "GetEstatusPago",
+    "RelativePath": "api/Catalogo/GetEstatusPago",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.CatalogoController",
+    "Method": "GetEstatusServicio",
+    "RelativePath": "api/Catalogo/GetEstatusServicio",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.CatalogoController",
+    "Method": "GetTipoGrua",
+    "RelativePath": "api/Catalogo/GetTipoGrua",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.GruaController",
+    "Method": "Get",
+    "RelativePath": "api/Grua",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.GruaController",
+    "Method": "Create",
+    "RelativePath": "api/Grua",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.Grua.CreateGrua_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.GruaController",
+    "Method": "Get",
+    "RelativePath": "api/Grua/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.GruaController",
+    "Method": "Update",
+    "RelativePath": "api/Grua/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.Grua.UpdateGrua_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.PagosController",
+    "Method": "GetServiciosPorPagar",
+    "RelativePath": "api/Pagos/GetServiciosPorPagar/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.PagosController",
+    "Method": "RegistrarPagoServicios",
+    "RelativePath": "api/Pagos/RegistrarPagoServicios",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Pagos.InsPagoServicios_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ProveedorController",
+    "Method": "ActivarDesactivarProveedor",
+    "RelativePath": "api/Proveedor/ActivarDesactivarProveedor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Proveedor.ActivarDesactivarProveedor_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ProveedorController",
+    "Method": "Get",
+    "RelativePath": "api/Proveedor/GetProveedor/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ProveedorController",
+    "Method": "GetProveedores",
+    "RelativePath": "api/Proveedor/GetProveedores",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ProveedorController",
+    "Method": "InsProveedor",
+    "RelativePath": "api/Proveedor/InsProveedor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Proveedor.InsProvedor_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ProveedorController",
+    "Method": "UpdateProveedor",
+    "RelativePath": "api/Proveedor/UpdateProveedor/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Proveedor.UpdProvedor_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ReportesController",
+    "Method": "GetGruas",
+    "RelativePath": "api/Reportes/GetGruas",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Reportes.GetGruas_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ReportesController",
+    "Method": "GetPagos",
+    "RelativePath": "api/Reportes/GetPagos",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Reportes.GetPagos_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ReportesController",
+    "Method": "GetProveedores",
+    "RelativePath": "api/Reportes/GetProveedores",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Reportes.GetProveedores_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ReportesController",
+    "Method": "GetServicios",
+    "RelativePath": "api/Reportes/GetServicios",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Reportes.GetServicios_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "AsignarGrua",
+    "RelativePath": "api/Servicio/AsignarGrua",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Servicio.AsignarGrua_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "CancelarServicio",
+    "RelativePath": "api/Servicio/CancelarServicio",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Servicio.CancelarServicio_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "ColocarEnPropuesta",
+    "RelativePath": "api/Servicio/ColocarEnPropuesta",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Servicio.ColocarEnPropuesta_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "GetSerrvicios",
+    "RelativePath": "api/Servicio/GetSerrvicios",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "estatusServicioId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "GetServicio",
+    "RelativePath": "api/Servicio/GetServicio",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "servicioId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "RegistraServicio",
+    "RelativePath": "api/Servicio/RegistraServicio",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Servicio.RegistraServicio_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "SolicitarCotizaciones",
+    "RelativePath": "api/Servicio/SolicitarCotizaciones",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Servicio.SolicitarCotizacion_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "TerminarServicio",
+    "RelativePath": "api/Servicio/TerminarServicio",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Servicio.TerminarServicio_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.UsuariosController",
+    "Method": "CreateUsuarioProveedor",
+    "RelativePath": "api/Usuarios/CreateUsuarioProveedor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Usuarios.CreateUsuario_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.UsuariosController",
+    "Method": "GetUsuarios",
+    "RelativePath": "api/Usuarios/GetUsuarios",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Usuarios.GetUsuarios_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.WeatherForecastController",
+    "Method": "Get",
+    "RelativePath": "WeatherForecast",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Gruas.API.WeatherForecast, Gruas.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "EndpointName": "GetWeatherForecast"
+  }
+]
