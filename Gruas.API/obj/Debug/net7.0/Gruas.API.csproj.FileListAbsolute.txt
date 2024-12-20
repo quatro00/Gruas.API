@@ -644,10 +644,10 @@ C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\staticwebassets\msbuild.bu
 C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.Gruas.API.props
 C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.Gruas.API.props
 C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\staticwebassets.pack.json
-C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\staticwebassets.upToDateCheck.txt
 C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\Gruas.API.csproj.Up2Date
 C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\Gruas.API.dll
 C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\refint\Gruas.API.dll
 C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\Gruas.API.pdb
 C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\Gruas.API.genruntimeconfig.cache
 C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\ref\Gruas.API.dll
+C:\_GitHub\Gruas\Gruas.API\Gruas.API\obj\Debug\net7.0\staticwebassets.upToDateCheck.txt

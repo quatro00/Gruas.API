@@ -102,5 +102,28 @@ namespace Gruas.API.Repositories.Implementation
 
             return rm;
         }
+
+        public async Task<ResponseModel> GetTipoServicio()
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var result = await context.TipoServicios.Select(s => new Catalogo_Response()
+                {
+                    id = s.TipoServicioId,
+                    descripcion = s.Descripcion,
+                }).OrderBy(x => x.id).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
     }
 }

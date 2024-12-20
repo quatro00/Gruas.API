@@ -19,7 +19,7 @@ namespace Gruas.API.Controllers
         }
         [HttpGet]
         [Route("")]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Get()
         {
             var response = await gruaRepository.Get();
@@ -35,7 +35,7 @@ namespace Gruas.API.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             var response = await gruaRepository.Get(id);
@@ -51,7 +51,7 @@ namespace Gruas.API.Controllers
 
         [HttpPost]
         [Route("")]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Create([FromBody] CreateGrua_Request model)
         {
             var response = await gruaRepository.Create(model, User.GetId());
@@ -67,7 +67,7 @@ namespace Gruas.API.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateGrua_Request model)
         {
             var response = await gruaRepository.Update(model, id, User.GetId());

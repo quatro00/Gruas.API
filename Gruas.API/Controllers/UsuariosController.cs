@@ -23,7 +23,9 @@ namespace Gruas.API.Controllers
 
         [HttpPost]
         [Route("CreateUsuarioProveedor")]
-        [Authorize]
+        
+
+
         public async Task<IActionResult> CreateUsuarioProveedor([FromBody] CreateUsuario_Request model)
         {
             var response = await usuariosRepository.CreateUsuarioProveedor(model, User.GetId());
@@ -39,7 +41,7 @@ namespace Gruas.API.Controllers
 
         [HttpPost]
         [Route("GetUsuarios")]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> GetUsuarios([FromBody] GetUsuarios_Request model)
         {
             var response = await usuariosRepository.Get(model);

@@ -29,6 +29,27 @@ namespace Gruas.API.Repositories.Implementation
             {
                 var id = Guid.NewGuid();
 
+                //validamos que el correo electronico no este registrado
+                if(await this.dbContext.AspNetUsers.Where(x=>x.PhoneNumber.ToUpper() == model.telefono.ToUpper()).AnyAsync())
+                {
+                    rm.SetResponse(false, "El teléfono ya esta registrado.");
+                    return rm;
+                }
+                //validamos que el telefono no este registrado
+
+                if (await this.dbContext.AspNetUsers.Where(x => x.Email.ToUpper() == model.correoElectronico.ToUpper()).AnyAsync())
+                {
+                    rm.SetResponse(false, "El correo electrónico ya esta registrado.");
+                    return rm;
+                }
+
+
+                if (await this.dbContext.AspNetUsers.Where(x => x.UserName.ToUpper() == model.nombreUsuario.ToUpper()).AnyAsync())
+                {
+                    rm.SetResponse(false, "El nombre de usuario ya esta registrado.");
+                    return rm;
+                }
+
                 IdentityUser user1 = new IdentityUser()
                 {
                     Id =id.ToString().ToUpper(),
@@ -85,54 +106,23 @@ namespace Gruas.API.Repositories.Implementation
             ResponseModel rm = new ResponseModel();
             try
             {
-                var usuarios = new List<SPQ_GetUsuarios>();
+                List<SpqGetUsuariosResult> result = await dbContext.SpqGetUsuariosResults
+                   .FromSqlRaw(
+                        "EXECUTE dbo.SPQ_GetUsuarios @Tipo = {0}, @CorreoElectronico = {1}, @Telefono = {2}",
+                        model.tipo ?? (object)DBNull.Value,
+                        model.correoElectronico ?? (object)DBNull.Value,
+                        model.telefono ?? (object)DBNull.Value
+                    )
+                    .ToListAsync();
 
-                using var connection = dbContext.Database.GetDbConnection();
-                await connection.OpenAsync();
-
-                using var command = connection.CreateCommand();
-                command.CommandText = "EXEC SPQ_GetUsuarios @Tipo, @CorreoElectronico, @Telefono";
-
-                // Agregar parámetros
-                var tipoParam = command.CreateParameter();
-                tipoParam.ParameterName = "@Tipo";
-                tipoParam.Value = model.tipo ?? (object)DBNull.Value;
-                command.Parameters.Add(tipoParam);
-
-                var correoParam = command.CreateParameter();
-                correoParam.ParameterName = "@CorreoElectronico";
-                correoParam.Value = model.correoElectronico ?? (object)DBNull.Value;
-                command.Parameters.Add(correoParam);
-
-                var telefonoParam = command.CreateParameter();
-                telefonoParam.ParameterName = "@Telefono";
-                telefonoParam.Value = model.telefono ?? (object)DBNull.Value;
-                command.Parameters.Add(telefonoParam);
-
-                using var reader = await command.ExecuteReaderAsync();
-                while (await reader.ReadAsync())
-                {
-                    usuarios.Add(new SPQ_GetUsuarios
-                    {
-                        id = Guid.Parse(reader["Id"]?.ToString() ?? ""),
-                        userName = reader["UserName"]?.ToString() ?? "",
-                        nombre = reader["Nombre"]?.ToString() ?? "",
-                        apellidos = reader["Apellidos"]?.ToString() ?? "",
-                        correoElectronico = reader["CorreoElectronico"]?.ToString() ?? "",
-                        telefono = reader["Telefono"]?.ToString() ?? "",
-                        razonSocial = reader["RazonSocial"]?.ToString() ?? "",
-                        Roles = reader["Roles"]?.ToString() ?? "",
-                        activo = reader["Activo"] != DBNull.Value && Convert.ToBoolean(reader["Activo"]) ? 1 : 0
-                    });
-                }
-
-                rm.result = usuarios;
-
+                rm.result = result;
+                rm.SetResponse(true);
             }
             catch (Exception ex)
             {
-                rm.SetResponse(false, "Ocurrio un error inesperado.");
+                rm.SetResponse(false);
             }
+
             return rm;
         }
 

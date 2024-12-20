@@ -21,7 +21,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("GetSerrvicios")]
         public async Task<IActionResult> GetSerrvicios(int? estatusServicioId)
         {
@@ -37,7 +37,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("RegistraServicio")]
         public async Task<IActionResult> RegistraServicio(RegistraServicio_Request request)
         {
@@ -52,7 +52,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("SolicitarCotizaciones")]
         public async Task<IActionResult> SolicitarCotizaciones(SolicitarCotizacion_Request request)
         {
@@ -67,7 +67,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("ColocarEnPropuesta")]
         public async Task<IActionResult> ColocarEnPropuesta(ColocarEnPropuesta_Request request)
         {
@@ -82,7 +82,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("TerminarServicio")]
         public async Task<IActionResult> TerminarServicio(TerminarServicio_Request request)
         {
@@ -97,7 +97,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("AsignarGrua")]
         public async Task<IActionResult> AsignarGrua(AsignarGrua_Request request)
         {
@@ -112,7 +112,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("CancelarServicio")]
         public async Task<IActionResult> CancelarServicio(CancelarServicio_Request request)
         {
@@ -127,7 +127,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("GetServicio")]
         public async Task<IActionResult> GetServicio(Guid servicioId)
         {

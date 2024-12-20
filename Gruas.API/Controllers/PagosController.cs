@@ -19,7 +19,7 @@ namespace Gruas.API.Controllers
         }
         [HttpGet]
         [Route("GetServiciosPorPagar/{id}")]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> GetServiciosPorPagar([FromRoute] Guid id)
         {
             var response = await pagoRepository.GetServiciosPorPagar(id);
@@ -36,7 +36,7 @@ namespace Gruas.API.Controllers
 
         [HttpPost]
         [Route("RegistrarPagoServicios")]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> RegistrarPagoServicios([FromBody] InsPagoServicios_Request model)
         {
             var response = await pagoRepository.RegistrarPagoServicios(model, Guid.Parse(User.GetId()));

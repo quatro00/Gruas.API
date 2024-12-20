@@ -17,7 +17,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("GetTipoGrua")]
         public async Task<IActionResult> GetTipoGrua()
         {
@@ -33,7 +33,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrador,Colaborador")]
         [Route("GetEstatusServicio")]
         public async Task<IActionResult> GetEstatusServicio()
         {
@@ -49,7 +49,23 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrador,Colaborador")]
+        [Route("GetTipoServicio")]
+        public async Task<IActionResult> GetTipoServicio()
+        {
+            var response = await catalogoRepository.GetTipoServicio();
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrador,Colaborador")]
         [Route("GetEstatusPago")]
         public async Task<IActionResult> GetEstatusPago()
         {
@@ -65,7 +81,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("GetEstados")]
         public async Task<IActionResult> GetEstados()
         {

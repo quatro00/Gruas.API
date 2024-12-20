@@ -18,7 +18,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("GetProveedores")]
         public async Task<IActionResult> GetProveedores()
         {
@@ -34,7 +34,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("GetProveedor/{id:Guid}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
@@ -50,7 +50,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [Route("InsProveedor")]
         public async Task<IActionResult> InsProveedor(InsProvedor_Request request)
         {
@@ -65,7 +65,8 @@ namespace Gruas.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        
+
         [Route("ActivarDesactivarProveedor")]
         public async Task<IActionResult> ActivarDesactivarProveedor(ActivarDesactivarProveedor_Request model)
         {
@@ -81,7 +82,7 @@ namespace Gruas.API.Controllers
 
         [HttpPut]
         [Route("UpdateProveedor/{id:Guid}")]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> UpdateProveedor([FromRoute] Guid id, [FromBody] UpdProvedor_Request request)
         {
             var response = await proveedorRepository.UpdProveedor(request, id, Guid.Parse(User.GetId()));

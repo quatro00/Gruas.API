@@ -153,6 +153,18 @@
         }
       }
     },
+    "/api/Catalogo/GetTipoServicio": {
+      "get": {
+        "tags": [
+          "Catalogo"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Catalogo/GetEstatusPago": {
       "get": {
         "tags": [
@@ -592,6 +604,68 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/GetGruas_Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Reportes/GetPagosProveedor": {
+      "post": {
+        "tags": [
+          "Reportes"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPagosProveedor_Request"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPagosProveedor_Request"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPagosProveedor_Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Reportes/GetServiciosProveedor": {
+      "post": {
+        "tags": [
+          "Reportes"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetServiciosProveedor_Request"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetServiciosProveedor_Request"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetServiciosProveedor_Request"
               }
             }
           }
@@ -1162,6 +1236,20 @@
         },
         "additionalProperties": false
       },
+      "GetPagosProveedor_Request": {
+        "type": "object",
+        "properties": {
+          "estatusPago": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "periodo": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "GetPagos_Request": {
         "type": "object",
         "properties": {
@@ -1197,6 +1285,26 @@
             "nullable": true
           },
           "descripcion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetServiciosProveedor_Request": {
+        "type": "object",
+        "properties": {
+          "estatusServicioId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tipoServicioId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "periodo": {
             "type": "string",
             "nullable": true
           }

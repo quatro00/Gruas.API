@@ -68,7 +68,8 @@ namespace Gruas.API.Controllers
 
         [HttpPost]
         [Route("change-password")]
-        [Authorize]
+        
+
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDto request)
         {
             var identityUser = await userManager.FindByNameAsync(request.username);
@@ -104,7 +105,7 @@ namespace Gruas.API.Controllers
 
         [HttpPatch]
         [Route("restore-password")]
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> RestorePassword([FromBody] RestorePasswordRequestDto request)
         {
             var identityUser = await userManager.FindByIdAsync(User.GetId());

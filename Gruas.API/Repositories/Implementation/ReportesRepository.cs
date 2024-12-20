@@ -1,11 +1,14 @@
-﻿using Gruas.API.Data;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using Gruas.API.Data;
 using Gruas.API.Models;
 using Gruas.API.Models.Domain;
 using Gruas.API.Models.DTO.Pagos;
+using Gruas.API.Models.DTO.Proveedor;
 using Gruas.API.Models.DTO.Reportes;
 using Gruas.API.Models.Enums;
 using Gruas.API.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace Gruas.API.Repositories.Implementation
 {
@@ -90,6 +93,51 @@ namespace Gruas.API.Repositories.Implementation
             return rm;
         }
 
+        public async Task<ResponseModel> GetPagosProveedor(GetPagosProveedor_Request model, Guid? proveedorId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+
+            DateTime fechaInicial = DateTime.ParseExact(model.periodo, "yyyy-MM", CultureInfo.InvariantCulture);
+            DateTime fechaTermino = fechaInicial.AddMonths(1);
+
+
+            try
+            {
+                var cuenta = await this.context.Cuenta.Where(x=>x.Id == proveedorId).FirstOrDefaultAsync();
+                Guid? proveedor = null;
+
+                if (cuenta != null) {
+                    proveedor = cuenta.ProveedorId;
+                }
+                var result = await context.Pagos
+                    .Where(x =>
+                        (x.EstatusPagoId == model.estatusPago || model.estatusPago == 0) &&
+                        ((x.FechaCreacion >= fechaInicial && x.FechaCreacion <= fechaTermino)) &&
+                        (x.ProveedorId == proveedor || proveedor == null)
+                        )
+                    .Select(s => new GetPagosProveedor_Result()
+                    {
+                        id = s.Id,
+                        folio = s.Folio,
+                        razonSocial = s.Proveedor.RazonSocial,
+                        concepto = s.Concepto,
+                        monto = s.Monto,
+                        referencia = s.Referencia ?? "",
+                        fechaPago = s.FechaPago,
+                        fechaRegistro = s.FechaCreacion
+                    }).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+            return rm;
+        }
+
         public async Task<ResponseModel> GetProveedores(GetProveedores_Request model)
         {
             ResponseModel rm = new ResponseModel();
@@ -169,6 +217,58 @@ namespace Gruas.API.Repositories.Implementation
                         grua = s.Grua != null ? s.Grua.Placas : string.Empty,
                         tipo = s.Grua != null ? s.Grua.TipoGrua.Descripcion : string.Empty,
                         numCotizaciones = s.Cotizacions.Count,
+                    }).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+            return rm;
+        }
+
+        public async Task<ResponseModel> GetServiciosProveedor(GetServiciosProveedor_Request model, Guid? proveedorId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+
+            DateTime fechaInicial = DateTime.ParseExact(model.periodo, "yyyy-MM", CultureInfo.InvariantCulture);
+            DateTime fechaTermino = fechaInicial.AddMonths(1);
+
+
+            try
+            {
+                var cuenta = await this.context.Cuenta.Where(x => x.Id == proveedorId).FirstOrDefaultAsync();
+                Guid? proveedor = null;
+
+                if (cuenta != null)
+                {
+                    proveedor = cuenta.ProveedorId;
+                }
+
+                var result = await context.Servicios.Include(x=>x.EstatusServicio)
+                    .Where(x =>
+                        (x.EstatusServicioId == model.estatusServicioId || (model.estatusServicioId ?? 0) == 0) &&
+                        (x.TipoServicioId == model.tipoServicioId || (model.tipoServicioId ?? 0) == 0) &&
+                        ((x.Fecha >= fechaInicial && x.Fecha <= fechaTermino)) &&
+                        (x.ProveedorId == proveedor || proveedor == null)
+                        )
+                    .Select(s => new GetServiciosProveedor_Result()
+                    {
+                        id = s.Id,
+                        folio = s.Folio,
+                        fecha = s.Fecha,
+                        origen = $"{s.OrigenDireccion}, {s.OrigenMunicipio}",
+                        destino = $"{s.DestinoDireccion}, {s.DestinoMunicipio}",
+                        distancia = s.Distancia,
+                        cuotaKm = s.CuotaKm,
+                        banderazo = s.Banderazo,
+                        total = s.Total ?? 0,
+                        comision = 0,
+                        estatus = s.EstatusServicio.Descripcion,
+                        placas = s.Grua != null ? s.Grua.Placas : string.Empty,
                     }).ToListAsync();
 
                 rm.result = result;

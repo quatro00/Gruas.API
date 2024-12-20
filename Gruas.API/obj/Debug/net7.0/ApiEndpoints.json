@@ -104,6 +104,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Gruas.API.Controllers.CatalogoController",
+    "Method": "GetTipoServicio",
+    "RelativePath": "api/Catalogo/GetTipoServicio",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Gruas.API.Controllers.GruaController",
     "Method": "Get",
     "RelativePath": "api/Grua",
@@ -311,6 +321,22 @@
   },
   {
     "ContainingType": "Gruas.API.Controllers.ReportesController",
+    "Method": "GetPagosProveedor",
+    "RelativePath": "api/Reportes/GetPagosProveedor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Proveedor.GetPagosProveedor_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ReportesController",
     "Method": "GetProveedores",
     "RelativePath": "api/Reportes/GetProveedores",
     "HttpMethod": "POST",
@@ -336,6 +362,22 @@
       {
         "Name": "model",
         "Type": "Gruas.API.Models.DTO.Reportes.GetServicios_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ReportesController",
+    "Method": "GetServiciosProveedor",
+    "RelativePath": "api/Reportes/GetServiciosProveedor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Reportes.GetServiciosProveedor_Request",
         "IsRequired": true
       }
     ],
