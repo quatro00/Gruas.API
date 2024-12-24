@@ -177,6 +177,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Gruas.API.Controllers.GruaController",
+    "Method": "GetGruasProveedor",
+    "RelativePath": "api/Grua/GetGruasProveedor",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Gruas.API.Controllers.PagosController",
     "Method": "GetServiciosPorPagar",
     "RelativePath": "api/Pagos/GetServiciosPorPagar/{id}",
@@ -433,6 +443,22 @@
   },
   {
     "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "EnviarCotizacionProveedor",
+    "RelativePath": "api/Servicio/EnviarCotizacionProveedor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Servicio.EnviarCotizacionProveedor_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
     "Method": "GetSerrvicios",
     "RelativePath": "api/Servicio/GetSerrvicios",
     "HttpMethod": "GET",
@@ -459,6 +485,32 @@
         "Name": "servicioId",
         "Type": "System.Guid",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "GetServiciosDisponibles",
+    "RelativePath": "api/Servicio/GetServiciosDisponibles",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "ModificarCotizacionProveedor",
+    "RelativePath": "api/Servicio/ModificarCotizacionProveedor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Servicio.ModificarCotizacionProveedor_Request",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

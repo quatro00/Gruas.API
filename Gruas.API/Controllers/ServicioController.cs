@@ -141,5 +141,53 @@ namespace Gruas.API.Controllers
 
             return Ok(response.result);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrador,Colaborador")]
+        [Route("GetServiciosDisponibles")]
+        public async Task<IActionResult> GetServiciosDisponibles()
+        {
+            var response = await servicioRepository.GetServiciosDisponibles(Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrador,Colaborador")]
+        [Route("EnviarCotizacionProveedor")]
+        public async Task<IActionResult> EnviarCotizacionProveedor(EnviarCotizacionProveedor_Request model)
+        {
+            var response = await servicioRepository.EnviarCotizacionProveedor(model, Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrador,Colaborador")]
+        [Route("ModificarCotizacionProveedor")]
+        public async Task<IActionResult> ModificarCotizacionProveedor(ModificarCotizacionProveedor_Request model)
+        {
+            var response = await servicioRepository.ModificarCotizacionProveedor(model, Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
     }
 }

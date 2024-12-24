@@ -14,5 +14,8 @@ namespace Gruas.API.Repositories.Interface
         public Task<ResponseModel> SolicitarCotizaciones(SolicitarCotizacion_Request request, Guid usuarioId);
         public Task<ResponseModel> ColocarEnPropuesta(ColocarEnPropuesta_Request request, Guid usuarioId);
         public Task<ResponseModel> TerminarServicio(TerminarServicio_Request request, Guid usuarioId);
+        public Task<ResponseModel> GetServiciosDisponibles(Guid usuarioId);
+        public Task<ResponseModel> EnviarCotizacionProveedor(EnviarCotizacionProveedor_Request model, Guid usuarioId);
+        public Task<ResponseModel> ModificarCotizacionProveedor(ModificarCotizacionProveedor_Request model, Guid usuarioId);
     }
 }

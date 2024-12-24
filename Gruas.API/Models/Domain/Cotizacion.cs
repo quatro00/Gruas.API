@@ -5,6 +5,8 @@ namespace Gruas.API.Models.Domain;
 
 public partial class Cotizacion
 {
+    public Guid Id { get; set; }
+
     public Guid GruaId { get; set; }
 
     public Guid ServicioId { get; set; }
@@ -12,6 +14,8 @@ public partial class Cotizacion
     public decimal TiempoArrivo { get; set; }
 
     public decimal Cotizacion1 { get; set; }
+
+    public bool Seleccionada { get; set; }
 
     public bool Activo { get; set; }
 

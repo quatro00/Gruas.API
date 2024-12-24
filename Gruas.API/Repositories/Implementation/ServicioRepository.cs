@@ -7,6 +7,7 @@ using Gruas.API.Models.DTO.Servicio;
 using Gruas.API.Models.Enums;
 using Gruas.API.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace Gruas.API.Repositories.Implementation
 {
@@ -105,6 +106,55 @@ namespace Gruas.API.Repositories.Implementation
             return rm;
         }
 
+        public async Task<ResponseModel> EnviarCotizacionProveedor(EnviarCotizacionProveedor_Request model, Guid usuarioId)
+        {
+            ResponseModel rm = new ResponseModel();
+            try
+            {
+                //validamos que no haya una cotizacion de ese proveedor para ese servicio
+                var cuenta = await this.context.Cuenta.Where(x => x.Id == usuarioId).FirstOrDefaultAsync();
+                Guid? proveedor = null;
+
+                if (cuenta != null)
+                {
+                    proveedor = cuenta.ProveedorId;
+                }
+
+
+                if (await this.context.Cotizacions.Where(x=>x.ServicioId == model.servicioId && x.Grua.ProveedorId == proveedor).AnyAsync()) 
+                {
+                    rm.SetResponse(false, "El servicio ya se encuentra cotizado, favor de modificar la cotización.");
+                    return rm;
+                }
+                Cotizacion cotizacion = new Cotizacion()
+                {
+                    Id = Guid.NewGuid(),
+                    Seleccionada = false,         
+                    ServicioId = model.servicioId,
+                    GruaId = model.gruaId,
+                    TiempoArrivo= model.tiempo,
+                    Cotizacion1 = model.costo,
+                    Activo = true,
+                    FechaCreacion = DateTime.Now,
+                    UsuarioCreacion = usuarioId
+
+                };
+
+                await this.context.Cotizacions.AddAsync(cotizacion);
+                await this.context.SaveChangesAsync();
+
+                //enviamos notificacion via correo electronico o sms
+
+                rm.SetResponse(true);
+            }
+            catch (Exception e)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
         public async Task<ResponseModel> GetServicio(Guid id)
         {
             ResponseModel rm = new ResponseModel();
@@ -185,6 +235,73 @@ namespace Gruas.API.Repositories.Implementation
                     gruaModelo = s.Grua != null ? s.Grua.Modelo : string.Empty,
                     gruaTipo = s.Grua != null ? s.Grua.TipoGrua.Descripcion : string.Empty,
                 }).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
+        public async Task<ResponseModel> GetServiciosDisponibles(Guid usuarioId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var cuenta = await this.context.Cuenta.Where(x => x.Id == usuarioId).FirstOrDefaultAsync();
+                Guid? proveedor = null;
+
+                if (cuenta != null)
+                {
+                    proveedor = cuenta.ProveedorId;
+                }
+
+
+                var result = await context.Servicios
+                    .Include(x=>x.Cotizacions)
+                    .Include(x=>x.TipoServicio)
+                    .Include(x => x.EstatusServicio)
+                    .Include(x => x.Municipio)
+                    .ThenInclude(m => m.Estado)
+                    .Where(x => x.EstatusServicioId == 3)
+                    .Select(s => new GetServiciosDisponibles_Request()
+                {
+                        id = s.Id,
+                        folio = s.Folio.ToString(),
+                        estatus = s.EstatusServicio.Descripcion,
+                        origen = s.OrigenMunicipio,
+                        destino = s.DestinoMunicipio,
+                        kms = s.Distancia,
+                        maniobras = s.Maniobras ? "Si" : "No",
+                        tipoServicio = s.TipoServicio.Descripcion,
+                        tipoVehiculo = s.TipoVehiculo,
+                        totalSugerido = s.TotalSugerido,
+                        totalCotizado = 0,
+                        tiempoCotizado = 0,
+                        fecha = s.Fecha.ToString("dd MMMM yyyy", new CultureInfo("es-ES")),
+                        hora = s.Fecha.ToString("h:mm tt", new CultureInfo("es-ES"))
+                }).ToListAsync();
+
+                foreach(var item in result)
+                {
+                    var cotizacion = await this.context.Cotizacions.Include(x=>x.Grua).Where(x=>x.ServicioId == item.id && x.Grua.ProveedorId == proveedor).FirstOrDefaultAsync();
+                    if(cotizacion != null)
+                    {
+                        item.cotizacionId = cotizacion.Id;
+                        item.estatus = "Cotizado";
+                        item.totalCotizado = cotizacion.Cotizacion1;
+                        item.tiempoCotizado = cotizacion.TiempoArrivo;
+                    }
+                    else
+                    {
+                        item.estatus = "Por cotizar";
+                    }
+                }
 
                 rm.result = result;
                 rm.SetResponse(true);
@@ -343,6 +460,44 @@ namespace Gruas.API.Repositories.Implementation
 
                 //enviamos notificacion via correo electronico o sms
                 
+                rm.SetResponse(true);
+            }
+            catch (Exception e)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
+        public async Task<ResponseModel> ModificarCotizacionProveedor(ModificarCotizacionProveedor_Request model, Guid usuarioId)
+        {
+            ResponseModel rm = new ResponseModel();
+            try
+            {
+                //validamos que no haya una cotizacion de ese proveedor para ese servicio
+                var cuenta = await this.context.Cuenta.Where(x => x.Id == usuarioId).FirstOrDefaultAsync();
+                Guid? proveedor = null;
+
+                if (cuenta != null)
+                {
+                    proveedor = cuenta.ProveedorId;
+                }
+
+
+                var cotizacion = await this.context.Cotizacions.Where(x => x.Id == model.cotizacionId).FirstOrDefaultAsync();
+                
+                
+                cotizacion.GruaId = model.gruaId;
+                cotizacion.TiempoArrivo = model.tiempo;
+                cotizacion.Cotizacion1 = model.costo;
+                cotizacion.FechaModificacion = DateTime.Now;
+                cotizacion.UsuarioModificacion = usuarioId;
+               
+                await this.context.SaveChangesAsync();
+
+                //enviamos notificacion via correo electronico o sms
+
                 rm.SetResponse(true);
             }
             catch (Exception e)

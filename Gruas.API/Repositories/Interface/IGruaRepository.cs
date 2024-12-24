@@ -9,5 +9,6 @@ namespace Gruas.API.Repositories.Interface
         Task<ResponseModel> Update(UpdateGrua_Request model, Guid id, string usuarioId);
         Task<ResponseModel> Get();
         Task<ResponseModel> Get(Guid id);
+        Task<ResponseModel> GetGruasProveedor(Guid id);
     }
 }

@@ -151,10 +151,11 @@ public partial class GruasContext : DbContext
 
         modelBuilder.Entity<Cotizacion>(entity =>
         {
-            entity.HasKey(e => new { e.GruaId, e.ServicioId }).HasName("PK_ServicioGrua");
+            entity.HasKey(e => e.Id).HasName("PK_ServicioGrua");
 
             entity.ToTable("Cotizacion");
 
+            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Cotizacion1)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("Cotizacion");

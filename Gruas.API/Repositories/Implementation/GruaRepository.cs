@@ -109,6 +109,46 @@ namespace Gruas.API.Repositories.Implementation
             return rm;
         }
 
+        public async Task<ResponseModel> GetGruasProveedor(Guid id)
+        {
+            ResponseModel rm = new ResponseModel();
+            try
+            {
+                var cuenta = await this.dbContext.Cuenta.Where(x => x.Id == id).FirstOrDefaultAsync();
+                Guid? proveedor = null;
+
+                if (cuenta != null)
+                {
+                    proveedor = cuenta.ProveedorId;
+                }
+
+
+                List<GetGrua_Response> gruas = await
+                this.dbContext.Gruas.Include(x => x.Proveedor).Include(x => x.TipoGrua).Where(x => x.ProveedorId == proveedor && x.Activo == true).Select(x => new GetGrua_Response()
+                {
+                    id = x.Id,
+                    proveedorId = x.ProveedorId,
+                    tipoGruaId = x.TipoGruaId,
+                    proveedor = x.Proveedor.RazonSocial,
+                    tipoGrua = x.TipoGrua.Descripcion,
+                    placas = x.Placas,
+                    marca = x.Marca,
+                    modelo = x.Modelo,
+                    anio = x.Anio,
+                    activo = x.Activo ? 1 : 0,
+                }).ToListAsync();
+
+                rm.result = gruas;
+                rm.SetResponse(true, "Datos guardados con éxito.");
+
+            }
+            catch (Exception ex)
+            {
+                rm.SetResponse(false, "Ocurrio un error inesperado.");
+            }
+            return rm;
+        }
+
         public async Task<ResponseModel> Update(UpdateGrua_Request model, Guid id, string usuarioId)
         {
             ResponseModel rm = new ResponseModel();

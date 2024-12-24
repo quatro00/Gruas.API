@@ -230,6 +230,18 @@
         }
       }
     },
+    "/api/Grua/GetGruasProveedor": {
+      "get": {
+        "tags": [
+          "Grua"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Grua/{id}": {
       "get": {
         "tags": [
@@ -909,6 +921,80 @@
         }
       }
     },
+    "/api/Servicio/GetServiciosDisponibles": {
+      "get": {
+        "tags": [
+          "Servicio"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Servicio/EnviarCotizacionProveedor": {
+      "post": {
+        "tags": [
+          "Servicio"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnviarCotizacionProveedor_Request"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnviarCotizacionProveedor_Request"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnviarCotizacionProveedor_Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Servicio/ModificarCotizacionProveedor": {
+      "post": {
+        "tags": [
+          "Servicio"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModificarCotizacionProveedor_Request"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModificarCotizacionProveedor_Request"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModificarCotizacionProveedor_Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Usuarios/CreateUsuarioProveedor": {
       "post": {
         "tags": [
@@ -1202,6 +1288,28 @@
         "type": "integer",
         "format": "int32"
       },
+      "EnviarCotizacionProveedor_Request": {
+        "type": "object",
+        "properties": {
+          "servicioId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "gruaId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "costo": {
+            "type": "number",
+            "format": "double"
+          },
+          "tiempo": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "ForgotPasswordRequestDto": {
         "type": "object",
         "properties": {
@@ -1445,6 +1553,28 @@
           },
           "remember": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ModificarCotizacionProveedor_Request": {
+        "type": "object",
+        "properties": {
+          "cotizacionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "gruaId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "costo": {
+            "type": "number",
+            "format": "double"
+          },
+          "tiempo": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false

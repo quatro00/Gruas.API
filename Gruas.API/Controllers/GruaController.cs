@@ -34,6 +34,22 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
+        [Route("GetGruasProveedor")]
+        [Authorize(Roles = "Administrador,Colaborador")]
+        public async Task<IActionResult> GetGruasProveedor()
+        {
+            var response = await gruaRepository.GetGruasProveedor(Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
