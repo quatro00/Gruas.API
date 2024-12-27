@@ -126,6 +126,21 @@ namespace Gruas.API.Controllers
             return Ok(response.result);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Administrador")]
+        [Route("AsignarCotizacion")]
+        public async Task<IActionResult> AsignarCotizacion(AsignarCotizaciones_Request request)
+        {
+            var response = await servicioRepository.AsignarCotizacion(request, Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+            return Ok(response.result);
+        }
+
         [HttpGet]
         [Authorize(Roles = "Administrador")]
         [Route("GetServicio")]
@@ -143,11 +158,43 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
+        [Route("GetCotizaciones")]
+        public async Task<IActionResult> GetCotizaciones(Guid servicioId)
+        {
+            var response = await servicioRepository.GetCotizaciones(servicioId);
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Administrador,Colaborador")]
         [Route("GetServiciosDisponibles")]
         public async Task<IActionResult> GetServiciosDisponibles()
         {
             var response = await servicioRepository.GetServiciosDisponibles(Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrador,Colaborador")]
+        [Route("GetServiciosProximos")]
+        public async Task<IActionResult> GetServiciosProximos()
+        {
+            var response = await servicioRepository.GetServiciosProximos(Guid.Parse(User.GetId()));
 
             if (!response.response)
             {

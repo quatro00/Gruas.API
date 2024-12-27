@@ -52,9 +52,6 @@ namespace Gruas.API.Controllers
 
         [HttpPost]
         [Route("GetProveedores")]
-        
-
-
         public async Task<IActionResult> GetProveedores([FromBody] GetProveedores_Request model)
         {
             var response = await reportesRepository.GetProveedores(model);

@@ -395,6 +395,22 @@
   },
   {
     "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "AsignarCotizacion",
+    "RelativePath": "api/Servicio/AsignarCotizacion",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Servicio.AsignarCotizaciones_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
     "Method": "AsignarGrua",
     "RelativePath": "api/Servicio/AsignarGrua",
     "HttpMethod": "POST",
@@ -459,6 +475,22 @@
   },
   {
     "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "GetCotizaciones",
+    "RelativePath": "api/Servicio/GetCotizaciones",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "servicioId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
     "Method": "GetSerrvicios",
     "RelativePath": "api/Servicio/GetSerrvicios",
     "HttpMethod": "GET",
@@ -493,6 +525,16 @@
     "ContainingType": "Gruas.API.Controllers.ServicioController",
     "Method": "GetServiciosDisponibles",
     "RelativePath": "api/Servicio/GetServiciosDisponibles",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.ServicioController",
+    "Method": "GetServiciosProximos",
+    "RelativePath": "api/Servicio/GetServiciosProximos",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

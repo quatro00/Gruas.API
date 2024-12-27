@@ -16,6 +16,33 @@ namespace Gruas.API.Repositories.Implementation
         private readonly GruasContext context;
         public ServicioRepository(GruasContext context) => this.context = context;
 
+        public async Task<ResponseModel> AsignarCotizacion(AsignarCotizaciones_Request model, Guid usuarioId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var cotizacion = await this.context.Cotizacions.Include(x=>x.Grua).Where(x=>x.Id == model.cotizacionId).FirstOrDefaultAsync();
+                cotizacion.Seleccionada = true;
+
+                var servicio = await this.context.Servicios.FindAsync(cotizacion.ServicioId);
+                servicio.ProveedorId = cotizacion.Grua.ProveedorId;
+                servicio.GruaId = cotizacion.GruaId;
+                servicio.Total = cotizacion.Cotizacion1;
+                servicio.TiempoLlegada = cotizacion.TiempoArrivo;
+                servicio.EstatusServicioId = (int)EstatusServicio_Enum.Aceptado;
+
+                await this.context.SaveChangesAsync();
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
         public async Task<ResponseModel> AsignarGrua(AsignarGrua_Request request, Guid usuarioId)
         {
             ResponseModel rm = new ResponseModel();
@@ -148,6 +175,45 @@ namespace Gruas.API.Repositories.Implementation
                 rm.SetResponse(true);
             }
             catch (Exception e)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
+        public async Task<ResponseModel> GetCotizaciones(Guid id)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var result = await context.Cotizacions
+                    
+                    .Include(x => x.Grua)
+                    .ThenInclude(m => m.Proveedor)
+                    .Include(x => x.Grua).ThenInclude(m => m.TipoGrua)
+                    .Where(x => x.ServicioId == id)
+                    .Select(s => new GetCotizaciones_Response()
+                {
+                    id = s.Id,
+                    tiempoCotizado = s.TiempoArrivo,
+                    costoCotizado = s.Cotizacion1,
+                    seleccionada = s.Seleccionada ? 1 : 0,
+                    razonSocial = s.Grua.Proveedor.RazonSocial,
+                    proveedorTelefono1 = s.Grua.Proveedor.Telefono1,
+                    proveedorTelefono2 = s.Grua.Proveedor.Telefono2,
+                    proveedorCorreo = "",
+                    gruaPlacas = s.Grua.Placas,
+                    gruaMarca = s.Grua.Marca,
+                    gruaAnio = s.Grua.Anio,
+                    gruaTipo  = s.Grua.TipoGrua.Descripcion
+                }).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
             {
                 rm.SetResponse(false);
             }
@@ -303,6 +369,100 @@ namespace Gruas.API.Repositories.Implementation
                     }
                 }
 
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
+        public async Task<ResponseModel> GetServiciosProximos(Guid usuarioId)
+        {
+           
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var cuenta = await this.context.Cuenta.Where(x => x.Id == usuarioId).FirstOrDefaultAsync();
+                Guid? proveedor = null;
+
+                if (cuenta != null)
+                {
+                    proveedor = cuenta.ProveedorId;
+                }
+
+
+                var result = await context.Servicios
+                    .Include(x => x.Cotizacions)
+                    .Include(x => x.TipoServicio)
+                    .Include(x => x.EstatusServicio)
+                    .Include(x => x.Municipio)
+                    .ThenInclude(m => m.Estado)
+                    .Where(x => x.EstatusServicioId == 5 && x.ProveedorId == proveedor && x.Fecha >= DateTime.Now.Date)
+                    .Select(s => new GetServiciosProximos_Response()
+                    {
+                        id = s.Id,
+                        folio = s.Folio.ToString(),
+                        tipoServicio = s.TipoServicio.Descripcion,
+                        fecha = s.Fecha,
+                        fechaDia = s.Fecha.Day,
+                        fechaMes = s.Fecha.ToString("MMM", new CultureInfo("es-ES")),
+                        fechaHora = s.Fecha.ToString("h:mm tt", new CultureInfo("es-ES")),
+                        cliente = s.Cliente.Nombre +" " + s.Cliente.Apellidos,
+                        clienteTelefono = s.Cliente.Telefono,
+                        origen = s.OrigenDireccion,
+                        origenMunicipio = s.OrigenMunicipio,
+                        destino = s.DestinoDireccion,
+                        destinoMunicipio = s.DestinoMunicipio,
+                        origenLat = s.OrigenLat,
+                        origenLon = s.OrigenLon,
+                        destinoLat = s.DestinoLat,
+                        destinoLon = s.DestinoLon,
+                        origenReferencia = s.OrigenReferencia,
+                        destinoReferencia = s.DestinoReferencia,
+                        vehiculoAccidentado = s.VehiculoAccidentado,
+                        fugaCombustible = s.FugaCombustible,
+                        llantasGiran = s.LlantasGiran,
+                        puedeNeutral = s.PuedeNeutral,
+                        personasEnVehiculo = s.PersonasEnVehiculo,
+                        lugarUbicuidad = s.LugarUbicuidad,
+                        carreteraCarril = s.CarreteraCarril ?? 0,
+                        carreteraKm = s.CarreteraKm ?? 0,
+                        carreteraDestino = s.CarreteraDestino ?? "",
+                        estacionamientoTipo = s.EstacionamientoTipo ?? "",
+                        estacionamientoPiso = s.EstacionamientoPiso ?? "",
+                        vehiculoMarca = s.VehiculoMarca ?? "",
+                        vehiculoAnio = s.VehiculoAnio,
+                        vehiculoModelo = s.VehiculoModelo,
+                        vehiculoColor = s.VehiculoColor,
+                        vehiculoCuentaPlacas = s.VehiculoCuentaPlacas,
+                        vehiculoPlacas = s.VehiculoPlacas,
+                        vehiculoCuentaModificaciones = s.VehiculoCuentaModificaciones,
+                        vehiculoDescripcionModificaciones = s.VehiculoDescripcionModificaciones,
+                        distancia = s.Distancia,
+                        cuotaKm = s.CuotaKm,
+                        banderazo = s.Banderazo,
+                        maniobras = s.Maniobras,
+                        maniobrasCosto = s.ManiobrasCosto,
+                        totalSugerido = s.TotalSugerido,
+                        estatusServicio = s.EstatusServicio.Descripcion,
+                        razonSocial = s.Proveedor.RazonSocial,
+                        proveedorTelefono = "",
+                        grua = s.Grua.Marca + " " + s.Grua.Modelo,
+                        gruaPlacas = s.Grua.Placas,
+                        total = s.Total ?? 0,
+                        tiempoLlegada = s.TiempoLlegada ?? 0,
+                        direccionCongestion = s.DireccionCongestion ?? 0,
+                        direccionKmTotales = s.DireccionKmTotales ?? 0,
+                        direccionMinsNormal = s.DireccionMinsNormal ?? 0,
+                        direccionMinsTrafico = s.DireccionMinsTrafico ?? 0
+                    }).ToListAsync();
+
+                
                 rm.result = result;
                 rm.SetResponse(true);
             }

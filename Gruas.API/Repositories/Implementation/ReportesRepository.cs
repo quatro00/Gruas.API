@@ -212,6 +212,7 @@ namespace Gruas.API.Repositories.Implementation
                         total = s.Total ?? 0,
                         totalSugerido = s.TotalSugerido,
                         comision = 0,
+                        fecha = s.Fecha,
                         estatus = s.EstatusServicio.Descripcion,
                         proveedor = s.Proveedor != null ? s.Proveedor.RazonSocial : string.Empty,//s.,
                         grua = s.Grua != null ? s.Grua.Placas : string.Empty,

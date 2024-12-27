@@ -19,5 +19,6 @@ namespace Gruas.API.Models.DTO.Reportes
         public string grua { get; set; }
         public string tipo { get; set; }
         public int numCotizaciones { get; set; }
+        public DateTime fecha { get; set; }
     }
 }
