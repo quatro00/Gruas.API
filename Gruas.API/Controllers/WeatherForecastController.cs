@@ -1,3 +1,4 @@
+using Gruas.API.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gruas.API.Controllers
@@ -28,6 +29,26 @@ namespace Gruas.API.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet]
+        [Route("GetInvoice")]
+        public async Task<IActionResult> GetInvoice()
+        {
+            PdfFormater pdfFormater = new PdfFormater();
+            //var response = await citasRepository.GetCitaById(id);
+            //CreateCitaResponse citaResponse = response.result;
+            /*
+            if (!response.response)//
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+            */
+            var pdfBytes = pdfFormater.Formato_Invoice();
+
+            return File(pdfBytes, "application/pdf", $"Invoice.pdf");
+            
         }
     }
 }

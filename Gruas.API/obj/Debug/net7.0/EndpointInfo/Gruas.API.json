@@ -307,6 +307,37 @@
         }
       }
     },
+    "/api/Landscape/SolicitaCotizacion": {
+      "post": {
+        "tags": [
+          "Landscape"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitarCotizacionLandscape_Request"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitarCotizacionLandscape_Request"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitarCotizacionLandscape_Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Pagos/GetServiciosPorPagar/{id}": {
       "get": {
         "tags": [
@@ -1161,6 +1192,18 @@
           }
         }
       }
+    },
+    "/WeatherForecast/GetInvoice": {
+      "get": {
+        "tags": [
+          "WeatherForecast"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1817,6 +1860,36 @@
             "nullable": true
           },
           "token": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SolicitarCotizacionLandscape_Request": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "telefono": {
+            "type": "string",
+            "nullable": true
+          },
+          "origen": {
+            "type": "string",
+            "nullable": true
+          },
+          "destino": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipoVehiculo": {
+            "type": "string",
+            "nullable": true
+          },
+          "fecha": {
             "type": "string",
             "nullable": true
           }

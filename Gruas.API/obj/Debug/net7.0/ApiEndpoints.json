@@ -187,6 +187,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Gruas.API.Controllers.LandscapeController",
+    "Method": "SolicitaCotizacion",
+    "RelativePath": "api/Landscape/SolicitaCotizacion",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Landscape.SolicitarCotizacionLandscape_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Gruas.API.Controllers.PagosController",
     "Method": "GetServiciosPorPagar",
     "RelativePath": "api/Pagos/GetServiciosPorPagar/{id}",
@@ -657,5 +673,15 @@
       }
     ],
     "EndpointName": "GetWeatherForecast"
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.WeatherForecastController",
+    "Method": "GetInvoice",
+    "RelativePath": "WeatherForecast/GetInvoice",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]

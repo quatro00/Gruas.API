@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Gruas.API.props" />
+</Project>

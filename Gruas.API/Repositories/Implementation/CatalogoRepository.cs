@@ -26,9 +26,9 @@ namespace Gruas.API.Repositories.Implementation
                 rm.result = result;
                 rm.SetResponse(true);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                rm.SetResponse(false);
+                rm.SetResponse(false, e.Message +"||" +e.InnerException);
             }
 
             return rm;

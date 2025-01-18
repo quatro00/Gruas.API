@@ -94,12 +94,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAny", policy =>
+    options.AddPolicy("AllowSpecificOrigins", policy =>
     {
-        policy
-        .AllowAnyOrigin()
-        .AllowAnyHeader()
-        .AllowAnyMethod();
+        policy.WithOrigins(
+            "https://quatro0-001-site2.ktempurl.com",
+            "https://quatro0-001-site3.ktempurl.com",
+            "https://quatro0-001-site4.ktempurl.com",
+            "http://localhost:4200") // Origen permitido
+              .AllowAnyHeader() // Permitir cualquier encabezado
+              .AllowAnyMethod(); // Permitir cualquier método HTTP
     });
 });
 
@@ -113,7 +116,7 @@ var app = builder.Build();
 //}
 
 
-app.UseCors("AllowAny");
+app.UseCors("AllowSpecificOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
 

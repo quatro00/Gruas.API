@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Gruas.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ca78e8c707d223b08979ec98e2bb7c6056847b8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fec15f6be1819a6618b23d85c5de701d7db02e6d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Gruas.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Gruas.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

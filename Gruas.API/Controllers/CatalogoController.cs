@@ -17,7 +17,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         [Route("GetTipoGrua")]
         public async Task<IActionResult> GetTipoGrua()
         {
@@ -33,7 +33,7 @@ namespace Gruas.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrador,Colaborador")]
+        //[Authorize(Roles = "Administrador,Colaborador")]
         [Route("GetEstatusServicio")]
         public async Task<IActionResult> GetEstatusServicio()
         {
