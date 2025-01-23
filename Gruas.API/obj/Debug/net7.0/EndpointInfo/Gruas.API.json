@@ -36,6 +36,37 @@
         }
       }
     },
+    "/api/Auth/loginColaborador": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Auth/change-password": {
       "post": {
         "tags": [
@@ -386,6 +417,18 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Pagos/GetPagosMensuales": {
+      "get": {
+        "tags": [
+          "Pagos"
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -1194,6 +1237,18 @@
       }
     },
     "/WeatherForecast/GetInvoice": {
+      "get": {
+        "tags": [
+          "WeatherForecast"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/WeatherForecast/TestPago": {
       "get": {
         "tags": [
           "WeatherForecast"

@@ -49,6 +49,22 @@
   },
   {
     "ContainingType": "Gruas.API.Controllers.AuthController",
+    "Method": "loginColaborador",
+    "RelativePath": "api/Auth/loginColaborador",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Gruas.API.Models.DTO.Auth.LoginRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.AuthController",
     "Method": "RestorePassword",
     "RelativePath": "api/Auth/restore-password",
     "HttpMethod": "PATCH",
@@ -200,6 +216,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.PagosController",
+    "Method": "GetPagosMensuales",
+    "RelativePath": "api/Pagos/GetPagosMensuales",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -678,6 +704,16 @@
     "ContainingType": "Gruas.API.Controllers.WeatherForecastController",
     "Method": "GetInvoice",
     "RelativePath": "WeatherForecast/GetInvoice",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.WeatherForecastController",
+    "Method": "TestPago",
+    "RelativePath": "WeatherForecast/TestPago",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

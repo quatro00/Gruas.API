@@ -8,6 +8,11 @@ using Gruas.API.Models.Enums;
 using Gruas.API.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using System;
+using System.Net;
+using System.Net.Mail;
+using Azure;
+using DocumentFormat.OpenXml.Office2013.Excel;
 
 namespace Gruas.API.Repositories.Implementation
 {
@@ -349,9 +354,11 @@ namespace Gruas.API.Repositories.Implementation
                         totalSugerido = s.TotalSugerido,
                         totalCotizado = 0,
                         tiempoCotizado = 0,
+                        latOrigen = s.OrigenLat,
+                        lonOrigen = s.OrigenLon,
                         fecha = s.Fecha.ToString("dd MMMM yyyy", new CultureInfo("es-ES")),
                         hora = s.Fecha.ToString("h:mm tt", new CultureInfo("es-ES"))
-                }).ToListAsync();
+                }).OrderBy(x=>x.kms).ToListAsync();
 
                 foreach(var item in result)
                 {
@@ -402,7 +409,7 @@ namespace Gruas.API.Repositories.Implementation
                     .Include(x => x.EstatusServicio)
                     .Include(x => x.Municipio)
                     .ThenInclude(m => m.Estado)
-                    .Where(x => x.EstatusServicioId == 5 && x.ProveedorId == proveedor && x.Fecha >= DateTime.Now.Date)
+                    .Where(x => (x.EstatusServicioId == 5 || x.EstatusServicioId == 6 || x.EstatusServicioId == 7) && x.ProveedorId == proveedor && x.Fecha >= DateTime.Now.Date)
                     .Select(s => new GetServiciosProximos_Response()
                     {
                         id = s.Id,
@@ -474,6 +481,69 @@ namespace Gruas.API.Repositories.Implementation
             return rm;
         }
 
+        public async Task<ResponseModel> EnviarCorreoServicio(Guid id)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                //buscamos el servicio
+                var servicio = await this.context.Servicios.Where(x => x.Id == id).FirstOrDefaultAsync();
+
+
+
+                Configuracion? configuracion_urlservicio = await this.context.Configuracions.FindAsync(1);
+
+                Configuracion? configuracion_correosmtp = await this.context.Configuracions.FindAsync(2);
+                Configuracion? configuracion_passwordsmtp = await this.context.Configuracions.FindAsync(3);
+                Configuracion? configuracion_servidorsmtp = await this.context.Configuracions.FindAsync(4);
+                Configuracion? configuracion_puertosmtp = await this.context.Configuracions.FindAsync(5);
+                Configuracion? configuracion_remitentesmtp = await this.context.Configuracions.FindAsync(6);
+
+                // Configuración del cliente SMTP
+                SmtpClient smtpClient = new SmtpClient(configuracion_servidorsmtp.ValorString)
+                {
+                    Port = 587, // Puerto SMTP para Gmail
+                                //Credentials = new NetworkCredential(configuracion_correosmtp.ValorString, "ltmd cgnj ortf ytaw"), // Tu correo y contraseña
+                    Credentials = new NetworkCredential(configuracion_correosmtp.ValorString, configuracion_passwordsmtp.ValorString), // Tu correo y contraseña
+                    EnableSsl = true, // Usar conexión segura
+                };
+
+                // Configuración del mensaje
+                MailMessage mailMessage = new MailMessage
+                {
+                    From = new MailAddress(configuracion_correosmtp.ValorString, configuracion_remitentesmtp.ValorString), // Correo remitente
+                    Subject = $"Solicitud de servicio de grúa No. {servicio.Folio.ToString()}",
+                    Body =
+                    $"🚨 ¡Nueva solicitud de servicio de grúa! 🚨 \n" +
+                    $"📍 Origen: {servicio.OrigenDireccion} \n" +
+                    $"📍 Destino: {servicio.DestinoDireccion} \n" +
+                    $"🛣️ Distancia total: {servicio.Distancia.ToString("N")} Km. \n" +
+                    $"💰 Precio sugerido: {servicio.TotalSugerido.ToString("C")} \n" +
+                    $"🚗 Tipo de vehículo: {servicio.TipoVehiculo} \n" +
+                    $"🔗 Detalle completo y opciones: {configuracion_urlservicio.ValorString + "/" + id.ToString()} \n" +
+                    "📲 ¡Responde pronto para asegurar este servicio! 😊 \n",
+
+
+
+
+                    IsBodyHtml = false, // Cambiar a true si quieres enviar HTML
+                };
+
+                // Destinatarios
+                mailMessage.To.Add("josecarlosgarciadiaz@gmail.com");
+
+                // Enviar correo
+                smtpClient.Send(mailMessage);
+            }
+            catch(Exception ioe)
+            {
+                rm.SetResponse(false, ioe.Message);
+            }
+            
+
+            return rm;
+        }
         public async Task<ResponseModel> InsServicio(RegistraServicio_Request model, Guid usuarioId)
         {
             ResponseModel rm = new ResponseModel();
@@ -619,7 +689,8 @@ namespace Gruas.API.Repositories.Implementation
                 await this.context.SaveChangesAsync();
 
                 //enviamos notificacion via correo electronico o sms
-                
+                await this.EnviarCorreoServicio(servicio.Id);
+
                 rm.SetResponse(true);
             }
             catch (Exception e)

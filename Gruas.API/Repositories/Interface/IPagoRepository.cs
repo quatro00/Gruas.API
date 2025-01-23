@@ -7,5 +7,6 @@ namespace Gruas.API.Repositories.Interface
     {
         Task<ResponseModel> GetServiciosPorPagar(Guid proveedorId);
         Task<ResponseModel> RegistrarPagoServicios(InsPagoServicios_Request model, Guid usuarioId);
+        Task<ResponseModel> GetPagosMensuales(int anio, int mes, Guid proveedorId);
     }
 }

@@ -14,6 +14,8 @@
         public decimal totalSugerido { get; set; }
         public decimal totalCotizado { get; set; }
         public decimal tiempoCotizado { get; set; }
+        public string latOrigen { get; set; }
+        public string lonOrigen { get; set; }
         public string fecha { get; set; }
         public string hora { get; set; }
         public Guid? cotizacionId { get; set; }

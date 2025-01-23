@@ -65,6 +65,54 @@ namespace Gruas.API.Controllers
             ModelState.AddModelError("error", "Email o password incorrecto.");
             return ValidationProblem(ModelState);
         }
+        [HttpPost]
+        [Route("loginColaborador")]
+        public async Task<IActionResult> loginColaborador([FromBody] LoginRequestDto request)
+        {
+            //checamos el email
+            var identityUser = await userManager.FindByNameAsync(request.username);
+
+            if (identityUser is not null)
+            {
+                var cuenta = await aspNetUsersRepository.GetUserById(Guid.Parse(identityUser.Id));
+                UsuarioDto cuentaDto = cuenta.result;
+
+                if (cuentaDto.activo == false)
+                {
+                    ModelState.AddModelError("error", "El usuario se encuentra bloqueado.");
+                    return ValidationProblem(ModelState);
+                }
+                var checkPasswordResult = await userManager.CheckPasswordAsync(identityUser, request.password);
+
+                if (checkPasswordResult)
+                {
+                    var roles = await userManager.GetRolesAsync(identityUser);
+
+                    if(roles.IndexOf("Colaborador")  == -1)
+                    {
+                        ModelState.AddModelError("error", "Usuario no registrado.");
+                        return ValidationProblem(ModelState);
+                    }
+                    var jwtToken = tokenRepository.CreateJwtToken(identityUser, roles.ToList());
+                    var response = new LoginResponseDto()
+                    {
+                        Email = identityUser.Email,
+                        Roles = roles.ToList(),
+                        Token = jwtToken,
+                        Nombre = "Nombre",
+                        Apellidos = "Apellido",
+                        Username = identityUser.UserName
+                    };
+
+
+                    return Ok(response);
+                }
+
+            }
+
+            ModelState.AddModelError("error", "Email o password incorrecto.");
+            return ValidationProblem(ModelState);
+        }
 
         [HttpPost]
         [Route("change-password")]

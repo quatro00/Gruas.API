@@ -6,6 +6,7 @@ using iText.Kernel.Geom;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
+using iText.Kernel.Colors;
 //string imagePath = "assets/background_invoice.png";
 
 
@@ -28,6 +29,8 @@ namespace Gruas.API.Helpers
                     using (Document document = new Document(pdfDocument))
                     {
 
+                        //#FFB830
+                        DeviceRgb backgroundColor = new DeviceRgb(255, 184, 48); // #FFB830
 
                         string imagePath = "assets/background_invoice.png";
                         ImageData imageData = ImageDataFactory.Create(imagePath);
@@ -39,7 +42,7 @@ namespace Gruas.API.Helpers
                         // Ajustar la imagen al tamaño de la página
                         image.SetFixedPosition(0, 0);  // Establecer la posición en la página (esquina inferior izquierda)
                         image.ScaleToFit(pageSize.GetWidth(), pageSize.GetHeight()); // Escalar la imagen para ajustarse al tamaño de la página
-
+                        
                         // Agregar la imagen como fondo
                         document.Add(image);
 
@@ -50,7 +53,29 @@ namespace Gruas.API.Helpers
                         tableHeader.AddCell(new Cell(1, 8).Add(new Paragraph("")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize)).SetHeight(100);
                         tableHeader.AddCell(new Cell(1, 2).Add(new Paragraph("#Orden")).SetTextAlignment(TextAlignment.CENTER).SetPaddingTop(43).SetBold().SetFontSize(fontSize)).SetHeight(100);
 
-                        tableFinal.AddCell(new Cell(1, 10).Add(new Paragraph("Contenido")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize));
+                        tableFinal.AddCell(new Cell(1, 2).Add(new Paragraph("Nombre:")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize));
+                        tableFinal.AddCell(new Cell(1, 3).Add(new Paragraph("#nombre")).SetTextAlignment(TextAlignment.LEFT).SetBold().SetUnderline().SetFontSize(fontSize));
+                        tableFinal.AddCell(new Cell(1, 2).Add(new Paragraph("Teléfono:")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize));
+                        tableFinal.AddCell(new Cell(1, 3).Add(new Paragraph("#telefono")).SetTextAlignment(TextAlignment.LEFT).SetUnderline().SetBold().SetFontSize(fontSize));
+
+                        tableFinal.AddCell(new Cell(1, 2).Add(new Paragraph("Email:")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize));
+                        tableFinal.AddCell(new Cell(1, 3).Add(new Paragraph("#email")).SetTextAlignment(TextAlignment.LEFT).SetBold().SetUnderline().SetFontSize(fontSize));
+                        tableFinal.AddCell(new Cell(1, 2).Add(new Paragraph("Fecha:")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize));
+                        tableFinal.AddCell(new Cell(1, 3).Add(new Paragraph("#fecha")).SetTextAlignment(TextAlignment.LEFT).SetUnderline().SetBold().SetFontSize(fontSize));
+
+                        tableFinal.AddCell(new Cell(1, 2).Add(new Paragraph("Origen:")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize));
+                        tableFinal.AddCell(new Cell(1, 3).Add(new Paragraph("#origen")).SetTextAlignment(TextAlignment.LEFT).SetBold().SetUnderline().SetFontSize(fontSize));
+                        tableFinal.AddCell(new Cell(1, 2).Add(new Paragraph("Destino:")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize));
+                        tableFinal.AddCell(new Cell(1, 3).Add(new Paragraph("#destino")).SetTextAlignment(TextAlignment.LEFT).SetUnderline().SetBold().SetFontSize(fontSize));
+
+                        tableFinal.AddCell(new Cell(1, 10).Add(new Paragraph("DATOS DEL SERVICIO:")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize).SetBackgroundColor(backgroundColor));
+                        tableFinal.AddCell(new Cell(1, 10).Add(new Paragraph("")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize));
+
+                        tableFinal.AddCell(new Cell(1, 10).Add(new Paragraph("DATOS DEL PROVEEDOR:")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize).SetBackgroundColor(backgroundColor));
+                        tableFinal.AddCell(new Cell(1, 10).Add(new Paragraph("")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize));
+
+                        tableFinal.AddCell(new Cell(1, 10).Add(new Paragraph("DATOS DEL COSTO:")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize).SetBackgroundColor(backgroundColor));
+                        tableFinal.AddCell(new Cell(1, 10).Add(new Paragraph("")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize));
 
                         tableFooter.AddCell(new Cell(1, 8).Add(new Paragraph("")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetFontSize(fontSize));
                         tableFooter.AddCell(new Cell(1, 2).Add(new Paragraph("#Orden")).SetTextAlignment(TextAlignment.CENTER).SetPaddingTop(43).SetBold().SetFontSize(fontSize)).SetHeight(100);

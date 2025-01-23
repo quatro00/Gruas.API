@@ -14,6 +14,41 @@ namespace Gruas.API.Repositories.Implementation
         private readonly GruasContext context;
         public PagoRepository(GruasContext context) => this.context = context;
 
+        public async Task<ResponseModel> GetPagosMensuales(int anio, int mes, Guid proveedorId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var proveedor = await this.context.Cuenta.FindAsync(proveedorId);
+
+                var result = await context.Pagos
+                    .Include(x => x.EstatusPago)
+                    .Where(x => x.FechaCreacion.Month == mes && x.FechaCreacion.Year == anio && x.ProveedorId == proveedor.ProveedorId)
+                    .Select(s => new GetPagosMensuales_Response()
+                    {
+                        id = s.Id,
+                        folio = s.Folio,
+                        monto = s.Monto,
+                        concepto = s.Concepto,
+                        estatusPagoId = s.EstatusPagoId,
+                        estatusPago = s.EstatusPago.Descripcion,
+                        referencia = s.Referencia,
+                        fechaPago = s.FechaPago,
+                        fechaCreacion = s.FechaCreacion
+                    }).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+
+            return rm;
+        }
+
         public async Task<ResponseModel> GetServiciosPorPagar(Guid proveedorId)
         {
             ResponseModel rm = new ResponseModel();
