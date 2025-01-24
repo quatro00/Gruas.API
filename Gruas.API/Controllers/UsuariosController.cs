@@ -54,5 +54,21 @@ namespace Gruas.API.Controllers
 
             return Ok(response.result);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrador, Colaborador")]
+        [Route("GetPerfil")]
+        public async Task<IActionResult> GetPerfil()
+        {
+            var response = await usuariosRepository.GetPerfil(Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
     }
 }

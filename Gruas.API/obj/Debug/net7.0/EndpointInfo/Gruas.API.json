@@ -1197,6 +1197,18 @@
         }
       }
     },
+    "/api/Usuarios/GetPerfil": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/WeatherForecast": {
       "get": {
         "tags": [
@@ -1488,10 +1500,6 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "username": {
             "type": "string",
             "nullable": true
           }

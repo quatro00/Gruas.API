@@ -665,6 +665,16 @@
   },
   {
     "ContainingType": "Gruas.API.Controllers.UsuariosController",
+    "Method": "GetPerfil",
+    "RelativePath": "api/Usuarios/GetPerfil",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Gruas.API.Controllers.UsuariosController",
     "Method": "GetUsuarios",
     "RelativePath": "api/Usuarios/GetUsuarios",
     "HttpMethod": "POST",

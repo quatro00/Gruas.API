@@ -10,5 +10,6 @@ namespace Gruas.API.Repositories.Interface
         Task<ResponseModel> Update(UpdateUsuario_Request model, Guid id, string usuarioId);
         Task<ResponseModel> Get(GetUsuarios_Request model);
         Task<ResponseModel> Get(Guid id);
+        Task<ResponseModel> GetPerfil(Guid id);
     }
 }

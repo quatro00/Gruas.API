@@ -1,6 +1,7 @@
 ﻿using Gruas.API.Helpers;
 using Gruas.API.Models.DTO.Auth;
 using Gruas.API.Models.DTO.Usuarios;
+using Gruas.API.Repositories.Implementation;
 using Gruas.API.Repositories.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -167,5 +168,7 @@ namespace Gruas.API.Controllers
 
             return Ok(response.Succeeded);
         }
+
+        
     }
 }

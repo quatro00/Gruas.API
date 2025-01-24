@@ -29,7 +29,9 @@ namespace Gruas.API.Repositories.Implementation
             ResponseModel rm = new ResponseModel();
             try
             {
-                var user = await context.AspNetUsers.Where(x => x.Email == model.Email && x.UserName == model.Username).FirstAsync();
+                var user = await context.AspNetUsers.Where(x => x.Email == model.Email 
+                //&& x.UserName == model.Username
+                ).FirstAsync();
                 if (user is not null)
                 {
                     SmtpClient smtpClient = new SmtpClient()

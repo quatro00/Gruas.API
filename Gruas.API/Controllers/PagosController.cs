@@ -68,5 +68,24 @@ namespace Gruas.API.Controllers
 
             return Ok(response.result);
         }
+
+        /*
+        [HttpPost]
+        [Route("GetPagos")]
+        [Authorize(Roles = "Colaborador")]
+        public async Task<IActionResult> GetPagos(GetPagos_Request model)
+        {
+            
+            var response = await pagoRepository.GetPagosMensuales(model.anio, model.mes, Guid.Parse(User.GetId()));
+
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
+        */
     }
 }

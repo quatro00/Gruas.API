@@ -93,6 +93,7 @@ namespace Gruas.API.Repositories.Implementation
             return rm;
         }
 
+
         public async Task<ResponseModel> GetPagosProveedor(GetPagosProveedor_Request model, Guid? proveedorId)
         {
             ResponseModel rm = new ResponseModel();
@@ -110,7 +111,7 @@ namespace Gruas.API.Repositories.Implementation
                 if (cuenta != null) {
                     proveedor = cuenta.ProveedorId;
                 }
-                var result = await context.Pagos
+                var result = await context.Pagos.Include(x=>x.EstatusPago).Include(x=>x.PagoDetalles)
                     .Where(x =>
                         (x.EstatusPagoId == model.estatusPago || model.estatusPago == 0) &&
                         ((x.FechaCreacion >= fechaInicial && x.FechaCreacion <= fechaTermino)) &&
@@ -125,7 +126,12 @@ namespace Gruas.API.Repositories.Implementation
                         monto = s.Monto,
                         referencia = s.Referencia ?? "",
                         fechaPago = s.FechaPago,
-                        fechaRegistro = s.FechaCreacion
+                        fechaRegistro = s.FechaCreacion,
+                        estatusPago = s.EstatusPago.Descripcion,
+                        estatusPagoId = s.EstatusPago.Id,
+                        subTotal = s.PagoDetalles.Sum(x => x.SubTotal),
+                        comision = s.PagoDetalles.Sum(x => x.Comision),
+                        total = s.PagoDetalles.Sum(x => x.Total),
                     }).ToListAsync();
 
                 rm.result = result;

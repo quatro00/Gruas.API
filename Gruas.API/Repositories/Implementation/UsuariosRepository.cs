@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Gruas.API.Data;
 using Gruas.API.Models;
 using Gruas.API.Models.Domain;
+using Gruas.API.Models.DTO.Catalogo;
 using Gruas.API.Models.DTO.StoredProcedures;
 using Gruas.API.Models.DTO.Usuarios;
 using Gruas.API.Models.Grua;
@@ -129,6 +130,35 @@ namespace Gruas.API.Repositories.Implementation
         public Task<ResponseModel> Get(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ResponseModel> GetPerfil(Guid id)
+        {
+            ResponseModel rm = new ResponseModel();
+
+            try
+            {
+                var result = await dbContext.Cuenta.Where(x=>x.Id == id).Include(x=>x.Proveedor).Select(s => new GetPerfil_Response()
+                {
+                    id = s.Id,
+                    razonSocial = s.Proveedor.RazonSocial,
+                    direccion = s.Proveedor.Direccion,
+                    rfc = s.Proveedor.Rfc,
+                    nombre = $"{s.Nombre} {s.Apellidos}",
+                    nombreUsuario = s.NombreUsuario,
+                    telefono = s.Telefono,
+                    correoEletronico = s.CorreoElectronico,
+                }).FirstOrDefaultAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception e)
+            {
+                rm.SetResponse(false, e.Message + "||" + e.InnerException);
+            }
+
+            return rm;
         }
 
         public Task<ResponseModel> Update(UpdateUsuario_Request model, Guid id, string usuarioId)

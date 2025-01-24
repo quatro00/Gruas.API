@@ -10,6 +10,10 @@
         public string referencia { get; set; }
         public DateTime? fechaPago { get; set; }
         public DateTime fechaRegistro { get; set; }
-
+        public int estatusPagoId { get; set; }
+        public string estatusPago {  get; set; }
+        public decimal subTotal { get; set; }
+        public decimal comision { get; set; }
+        public decimal total { get; set; }
     }
 }
