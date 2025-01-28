@@ -701,6 +701,37 @@
         }
       }
     },
+    "/api/Reportes/GetServiciosProveedorMensuales": {
+      "post": {
+        "tags": [
+          "Reportes"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetServiciosProveedorMensuales_Request"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetServiciosProveedorMensuales_Request"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetServiciosProveedorMensuales_Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Reportes/GetPagosProveedor": {
       "post": {
         "tags": [
@@ -1575,6 +1606,16 @@
             "nullable": true
           },
           "descripcion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetServiciosProveedorMensuales_Request": {
+        "type": "object",
+        "properties": {
+          "periodo": {
             "type": "string",
             "nullable": true
           }

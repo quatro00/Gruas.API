@@ -81,7 +81,21 @@ namespace Gruas.API.Controllers
             return Ok(response.result);
         }
 
+        [HttpPost]
+        [Route("GetServiciosProveedorMensuales")]
+        [Authorize(Roles = "Administrador,Colaborador")]
+        public async Task<IActionResult> GetServiciosProveedorMensuales([FromBody] GetServiciosProveedorMensuales_Request model)
+        {
+            var response = await reportesRepository.GetServiciosProveedorMensuales(model, Guid.Parse(User.GetId()));
 
+            if (!response.response)
+            {
+                ModelState.AddModelError("error", response.message);
+                return ValidationProblem(ModelState);
+            }
+
+            return Ok(response.result);
+        }
 
         [HttpPost]
         [Route("GetPagosProveedor")]

@@ -436,6 +436,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Gruas.API.Controllers.ReportesController",
+    "Method": "GetServiciosProveedorMensuales",
+    "RelativePath": "api/Reportes/GetServiciosProveedorMensuales",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Gruas.API.Models.DTO.Reportes.GetServiciosProveedorMensuales_Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Gruas.API.Controllers.ServicioController",
     "Method": "AsignarCotizacion",
     "RelativePath": "api/Servicio/AsignarCotizacion",

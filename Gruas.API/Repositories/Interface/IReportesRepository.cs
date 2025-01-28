@@ -12,5 +12,6 @@ namespace Gruas.API.Repositories.Interface
         public Task<ResponseModel> GetGruas(GetGruas_Request model);
         public Task<ResponseModel> GetPagosProveedor(GetPagosProveedor_Request model, Guid? proveedorId);
         public Task<ResponseModel> GetServiciosProveedor(GetServiciosProveedor_Request model, Guid? proveedorId);
+        public Task<ResponseModel> GetServiciosProveedorMensuales(GetServiciosProveedorMensuales_Request model, Guid? proveedorId);
     }
 }

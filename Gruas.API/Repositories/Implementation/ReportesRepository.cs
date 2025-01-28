@@ -287,5 +287,119 @@ namespace Gruas.API.Repositories.Implementation
             }
             return rm;
         }
+
+        public async Task<ResponseModel> GetServiciosProveedorMensuales(GetServiciosProveedorMensuales_Request model, Guid? proveedorId)
+        {
+            ResponseModel rm = new ResponseModel();
+
+
+            DateTime fechaInicial = DateTime.ParseExact(model.periodo, "yyyy-MM", CultureInfo.InvariantCulture);
+            DateTime fechaTermino = fechaInicial.AddMonths(1);
+
+
+            try
+            {
+                var cuenta = await this.context.Cuenta.Where(x => x.Id == proveedorId).FirstOrDefaultAsync();
+                Guid? proveedor = null;
+
+                if (cuenta != null)
+                {
+                    proveedor = cuenta.ProveedorId;
+                }
+
+                var result = await context.Servicios
+                    .Include(x => x.EstatusServicio)
+                    .Include(x => x.TipoServicio)
+                    .Include(x => x.Cliente)
+                    .Include(x => x.Municipio)
+                    .Include(x=>x.EstatusServicio)
+                    .Include(x=>x.Proveedor)
+                    .Include(x=>x.Grua)
+                    .Where(x =>
+                        ((x.Fecha >= fechaInicial && x.Fecha <= fechaTermino)) &&
+                        (x.ProveedorId == proveedor || proveedor == null)
+                        )
+                    .Select(s => new GetServiciosProveedorMensuales_Response()
+                    {
+                        id = s.Id,
+                        folio = s.Folio,
+                        tipoServicioId = s.TipoServicioId,
+                        tipoServicio = s.TipoServicio.Descripcion,
+                        fecha = s.Fecha,
+                        clienteId = s.ClienteId,
+                        clienteNombre = $"{s.Cliente.Nombre} {s.Cliente.Apellidos}",
+                        clienteTelefono = s.Cliente.Telefono,
+                        municipioId = s.MunicipioId,
+                        municipio = s.Municipio != null ? s.Municipio.Nombre : string.Empty,
+                        tipoVehiculo = s.TipoVehiculo,
+                        origenMunicipio = s.OrigenMunicipio,
+                        origenDireccion = s.OrigenDireccion,
+                        origenLat = s.OrigenLat,
+                        origenLon = s.OrigenLon,
+                        origenReferencia = s.OrigenReferencia,
+
+                        destinoMunicipio = s.DestinoMunicipio,
+                        destinoDireccion = s.DestinoDireccion,
+                        destinoLat = s.DestinoLat,
+                        destinoLon = s.DestinoLon,
+                        destinoReferencia = s.DestinoReferencia,
+
+                        vehiculoAccidentado = s.VehiculoAccidentado,
+                        fugaCombustible = s.FugaCombustible,
+                        llantasGiran = s.LlantasGiran,
+                        puedeNeutral = s.PuedeNeutral,
+                        personasEnVehiculo = s.PersonasEnVehiculo,
+                        lugarUbicuidad = s.LugarUbicuidad,
+                        carreteraCarril = s.CarreteraCarril,
+                        carreteraKm = s.CarreteraKm,
+                        carreteraDestino = s.CarreteraDestino,
+                        estacionamientoTipo = s.EstacionamientoTipo,
+                        estacionamientoPiso = s.EstacionamientoPiso,
+                        vehiculoMarca = s.VehiculoMarca,
+                        vehiculoAnio = s.VehiculoAnio,
+                        vehiculoColor = s.VehiculoColor,
+                        vehiculoCuentaPlacas = s.VehiculoCuentaPlacas,
+                        vehiculoPlacas = s.VehiculoPlacas,
+                        vehiculoCuentaModificaciones = s.VehiculoCuentaModificaciones,
+                        vehiculoDescripcionModificaciones = s.VehiculoDescripcionModificaciones,
+                        distancia = s.Distancia,
+                        cuotaKm = s.CuotaKm,
+                        banderazo = s.Banderazo,
+                        maniobras = s.Maniobras,
+                        maniobrasCosto = s.ManiobrasCosto,
+                        totalSugerido = s.TotalSugerido,
+                        estatusServicioId = s.EstatusServicioId,
+                        estatusServicio = s.EstatusServicio.Descripcion,
+                        proveedorId = s.ProveedorId,
+                        proveedorRfc = s.Proveedor != null ? s.Proveedor.Rfc : string.Empty,
+                        proveedorRazonSocial = s.Proveedor != null ? s.Proveedor.RazonSocial : string.Empty,
+                        proveedorTelefono = s.Proveedor != null ? s.Proveedor.Telefono1 : string.Empty,
+                        gruaId = s.GruaId,
+                        gruaPlacas = s.Grua != null ? s.Grua.Placas : string.Empty,
+                        gruaMarca = s.Grua != null ? s.Grua.Marca : string.Empty,
+                        gruaModelo = s.Grua != null ? s.Grua.Modelo : string.Empty,
+                        total = s.Total,
+                        tiempoLlegada = s.TiempoLlegada,
+                        direccionCongestion = s.DireccionCongestion,
+                        direccionKmsTotales = s.DireccionKmTotales,
+                        direccionMinsNormal = s.DireccionMinsNormal,
+                        direccionMinsTrafico = s.DireccionMinsTrafico,
+                        motivoCancelacion = s.MotivoCancelacion,
+                        fechaCancelacion = s.FechaCancelacion,
+                        usuarioCancelacion = s.UsuarioCancelacion,
+                        telefono = s.Telefono,
+                        correoElectronico = s.CorreoElectronico,
+                        fechaCreacion = s.FechaCreacion,
+                    }).OrderByDescending(x=>x.fechaCreacion).ToListAsync();
+
+                rm.result = result;
+                rm.SetResponse(true);
+            }
+            catch (Exception)
+            {
+                rm.SetResponse(false);
+            }
+            return rm;
+        }
     }
 }
